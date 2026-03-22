@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const NAV_ITEMS = ["Features", "Languages", "Blog", "Download"] as const;
 
@@ -43,10 +44,14 @@ export default function Nav() {
           : "py-6 px-6 md:px-12 bg-transparent"
       }`}
     >
-      <a href="#hero" className="no-underline flex items-center gap-3 group">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-urdu font-bold text-lg shadow-[0_4px_16px_rgba(103,58,183,0.3)] group-hover:shadow-[0_4px_24px_rgba(103,58,183,0.45)] transition-shadow duration-300">
-          ਅ
-        </div>
+      <a href="#hero" className="no-underline flex items-center gap-2 group">
+        <Image
+          src="/logo.png"
+          alt="Alfaazo"
+          width={40}
+          height={40}
+          className="rounded-xl group-hover:scale-105 transition-transform duration-300"
+        />
         <div className="flex flex-col">
           <span className="font-heading font-bold text-[1.3rem] text-primary-dark leading-none tracking-tight">
             Alfaazo

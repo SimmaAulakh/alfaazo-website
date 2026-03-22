@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
     <footer className="px-6 md:px-12 pb-8 pt-16 relative">
@@ -7,10 +9,14 @@ export default function Footer() {
       <div className="max-w-[1200px] mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
           {/* Brand */}
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-urdu text-sm shadow-[0_2px_12px_rgba(103,58,183,0.2)]">
-              ਅ
-            </div>
+          <div className="flex items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="Alfaazo"
+              width={36}
+              height={36}
+              className="rounded-xl"
+            />
             <div>
               <div className="font-heading font-bold text-[1.15rem] text-ink leading-none">
                 Alfaazo
@@ -23,13 +29,17 @@ export default function Footer() {
 
           {/* Links */}
           <div className="flex gap-8">
-            {["Privacy", "Terms", "Contact"].map((link) => (
+            {[
+              { label: "Privacy", href: "#" },
+              { label: "Terms", href: "#" },
+              { label: "Contact", href: "/contact" },
+            ].map((link) => (
               <a
-                key={link}
-                href="#"
+                key={link.label}
+                href={link.href}
                 className="no-underline text-[0.82rem] text-warm-brown/45 hover:text-primary transition-colors duration-300"
               >
-                {link}
+                {link.label}
               </a>
             ))}
           </div>
