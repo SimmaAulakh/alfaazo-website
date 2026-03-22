@@ -84,7 +84,10 @@ const jsonLd = {
       "@type": "Organization",
       name: "Codefeb",
       url: "https://codefeb.com",
-      logo: "https://alfaazo.com/icon.png",
+      logo: "https://alfaazo.com/logo.png",
+      sameAs: [
+        "https://www.instagram.com/alfaazoapp",
+      ],
     },
     {
       "@type": "WebSite",
@@ -107,6 +110,53 @@ const jsonLd = {
         priceCurrency: "USD",
       },
       author: { "@type": "Organization", name: "Codefeb" },
+      downloadUrl: "https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308",
+      installUrl: "https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308",
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: [
+        {
+          "@type": "Question",
+          name: "Is Punjabi hard to learn?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Punjabi is approachable for beginners. Gurmukhi is a phonetic script — every letter maps to one sound. Most learners pick up basic reading within 2-3 weeks. If you already speak Hindi or Urdu, you'll recognise much of the vocabulary. The main challenge is Punjabi's tonal system, but context resolves most ambiguity in everyday conversation.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What is the best app to learn Punjabi?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Alfaazo is a free language learning app designed specifically for Punjabi learners. Unlike generic language apps, Alfaazo teaches Gurmukhi script with stroke-by-stroke guides, everyday phrases with native audio, and real-world conversations — all through bite-sized lessons crafted with cultural context.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "How long does it take to learn Punjabi?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "With consistent daily practice of 15-20 minutes, most learners can read Gurmukhi within 2-3 weeks, hold basic conversations within 2-3 months, and achieve conversational fluency in 6-12 months. Heritage speakers who already understand spoken Punjabi progress faster.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What is the difference between Punjabi and Hindi?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Punjabi and Hindi are sibling languages from the Indo-Aryan family. Key differences: Punjabi uses Gurmukhi script while Hindi uses Devanagari; Punjabi is a tonal language while Hindi is not; verb conjugations and cultural vocabulary differ significantly. About 60-70% of basic vocabulary is shared between the two.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Can I learn Punjabi for free?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes. Alfaazo is completely free to download on iOS, with Android coming soon. The app includes Gurmukhi script lessons, everyday phrases, pronunciation practice with native audio, and culturally-rooted conversations — all at no cost.",
+          },
+        },
+      ],
     },
   ],
 };
