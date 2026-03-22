@@ -19,6 +19,9 @@ const BLOG_SLUGS = [
   "punjabi-greetings-hello-goodbye",
   "is-punjabi-hard-to-learn",
   "punjabi-vs-hindi-difference",
+  "importance-of-learning-punjabi-language-in-2026",
+  "importance-of-punjabi-language-in-sikh-culture",
+  "benefits-of-learning-punjabi-for-kids",
 ];
 
 export function generateStaticParams() {
