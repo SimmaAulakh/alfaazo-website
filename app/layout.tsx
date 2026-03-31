@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Playfair_Display, DM_Sans, Noto_Nastaliq_Urdu } from "next/font/google";
 import "./globals.css";
 
@@ -178,6 +179,18 @@ export default function RootLayout({
         />
       </head>
       <body>{children}</body>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-R64WSHTNE7"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-R64WSHTNE7');
+        `}
+      </Script>
     </html>
   );
 }
