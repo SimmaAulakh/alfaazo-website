@@ -1,19 +1,12 @@
 import type { MetadataRoute } from "next";
+import { getAllSlugs } from "@/lib/blog";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 300;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://alfaazo.com";
 
-  const blogSlugs = [
-    "10-essential-punjabi-phrases",
-    "why-learning-mother-tongue-matters",
-    "gurmukhi-vs-shahmukhi",
-    "how-to-say-thank-you-in-punjabi",
-    "beginners-guide-gurmukhi-alphabet",
-    "punjabi-greetings-hello-goodbye",
-    "is-punjabi-hard-to-learn",
-    "punjabi-vs-hindi-difference",
-    "importance-of-learning-punjabi-language-in-2026",
-  ];
+  const blogSlugs = await getAllSlugs();
 
   return [
     {
