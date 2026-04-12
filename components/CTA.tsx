@@ -56,23 +56,22 @@ export default function CTA() {
                 </a>
 
                 <a
-                  href="https://forms.gle/SQL24Ukak68iB6Ur9"
+                  href="https://play.google.com/store/apps/details?id=com.alfaazo.app"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => trackClick("play_store_waitlist_cta")}
+                  onClick={() => trackClick("play_store_cta")}
                   className="group flex items-center gap-3 pl-5 pr-7 py-3 rounded-2xl bg-white/10 text-white no-underline border border-white/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15"
                 >
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="opacity-70 group-hover:opacity-100 transition-opacity">
                     <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.61 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
                   </svg>
                   <div>
-                    <div className="text-[0.6rem] opacity-70 uppercase tracking-[0.08em] leading-none">Coming soon on</div>
+                    <div className="text-[0.6rem] opacity-70 uppercase tracking-[0.08em] leading-none">Get it on</div>
                     <div className="text-[0.95rem] font-semibold leading-tight">Google Play</div>
                   </div>
-                  <span className="text-[0.55rem] font-semibold bg-xp-gold text-primary-dark px-2 py-0.5 rounded-full uppercase tracking-wider">Beta</span>
                 </a>
               </div>
-              <span className="text-[0.72rem] text-white/50 tracking-wide">Join the Android waitlist for early access</span>
+              <span className="text-[0.72rem] text-white/50 tracking-wide">Available now on Google Play</span>
             </div>
           </div>
         </div>

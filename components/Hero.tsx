@@ -91,10 +91,10 @@ export default function Hero() {
             </a>
 
             <a
-              href="https://forms.gle/SQL24Ukak68iB6Ur9"
+              href="https://play.google.com/store/apps/details?id=com.alfaazo.app"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackClick("play_store_waitlist_hero")}
+              onClick={() => trackClick("play_store_hero")}
               className="group flex items-center gap-3 pl-5 pr-7 py-3 rounded-2xl bg-primary/15 text-primary no-underline transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/20 border border-primary/20"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="opacity-75 group-hover:opacity-100 transition-opacity">
@@ -102,11 +102,10 @@ export default function Hero() {
               </svg>
               <div>
                 <div className="text-[0.6rem] opacity-70 uppercase tracking-[0.08em] leading-none">
-                  Coming soon on
+                  Get it on
                 </div>
                 <div className="text-[0.95rem] font-semibold leading-tight">Google Play</div>
               </div>
-              <span className="text-[0.6rem] font-semibold bg-primary/15 text-primary px-2 py-0.5 rounded-full uppercase tracking-wider">Beta</span>
             </a>
           </div>
         </div>
