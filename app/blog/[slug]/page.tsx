@@ -21,16 +21,30 @@ export async function generateMetadata({
   const post = await getPostBySlug(slug);
   if (!post) return {};
 
+  // Auto-generate keywords from title and tag
+  const titleWords = post.title.toLowerCase().split(/[\s—:,]+/).filter(w => w.length > 3);
+  const keywords = [
+    "learn Punjabi",
+    "Punjabi app",
+    "Alfaazo",
+    post.tag,
+    ...titleWords,
+  ];
+
   return {
     title: post.title,
     description: post.excerpt,
+    keywords,
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
       publishedTime: post.date,
+      modifiedTime: post.date,
       authors: ["Codefeb"],
       url: `https://alfaazo.com/blog/${slug}`,
+      siteName: "Alfaazo",
+      locale: "en_US",
     },
     twitter: {
       card: "summary_large_image",
