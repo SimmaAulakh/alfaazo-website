@@ -71,6 +71,24 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://alfaazo.com",
   },
+  itunes: {
+    appId: "6759987308",
+    appArgument: "https://alfaazo.com",
+  },
+  appLinks: {
+    ios: {
+      url: "https://alfaazo.com",
+      app_store_id: "6759987308",
+    },
+    android: {
+      package: "com.alfaazo.app",
+      app_name: "Alfaazo",
+    },
+    web: {
+      url: "https://alfaazo.com",
+      should_fallback: true,
+    },
+  },
   robots: {
     index: true,
     follow: true,
@@ -95,14 +113,37 @@ const jsonLd = {
       sameAs: [
         "https://www.instagram.com/alfaazoapp",
       ],
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        url: "https://alfaazo.com/contact",
+      },
     },
     {
       "@type": "WebSite",
       name: "Alfaazo",
       url: "https://alfaazo.com",
+      inLanguage: "en",
       description:
         "Learn Punjabi with bite-sized lessons crafted with cultural love.",
       publisher: { "@type": "Organization", name: "Codefeb" },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://alfaazo.com/blog?q={search_term_string}",
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "Course",
+      name: "Learn Punjabi with Alfaazo",
+      description:
+        "Free Punjabi language course covering Gurmukhi script, everyday phrases, and real-world conversations through bite-sized lessons.",
+      provider: { "@type": "Organization", name: "Codefeb" },
+      isAccessibleForFree: true,
+      inLanguage: "en",
+      teaches: "Punjabi language",
+      availableLanguage: "pa",
+      url: "https://alfaazo.com",
     },
     {
       "@type": "MobileApplication",
@@ -182,6 +223,30 @@ const jsonLd = {
           acceptedAnswer: {
             "@type": "Answer",
             text: "Yes. Alfaazo is completely free to download on iOS and Android. The app includes Gurmukhi script lessons, everyday phrases, pronunciation practice with native audio, and culturally-rooted conversations — all at no cost.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "How do I learn Punjabi online for free?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Download Alfaazo on iOS or Android to start learning Punjabi for free. The app provides structured Gurmukhi script lessons, everyday phrases with native pronunciation, and culturally-rooted conversations. Spend just 10-15 minutes a day with bite-sized lessons designed for self-paced learning.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What is the best app to learn Punjabi in 2026?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Alfaazo is the top-rated Punjabi learning app in 2026. It is purpose-built for Punjabi — unlike generic language apps, it teaches Gurmukhi script with stroke-by-stroke guides, real-world conversations, and cultural context. It is free on both iOS and Android.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "How long does it take to learn the Gurmukhi alphabet?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Most learners can recognize all 35 Gurmukhi letters within 2-3 weeks of consistent practice. Gurmukhi is a phonetic script where each letter represents exactly one sound, making it straightforward to learn. Alfaazo provides stroke-by-stroke writing guides to help you master each letter.",
           },
         },
       ],

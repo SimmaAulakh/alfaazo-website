@@ -56,6 +56,17 @@ export async function getRecentPosts(count: number): Promise<BlogPost[]> {
   return snapshot.docs.map((d) => ({ slug: d.id, ...d.data() }) as BlogPost);
 }
 
+export async function getPostsByTag(tag: string): Promise<BlogPost[]> {
+  // Reuse existing (published, date) composite index and filter tag client-side
+  const posts = await getAllPosts();
+  return posts.filter((p) => p.tag === tag);
+}
+
+export async function getAllTags(): Promise<string[]> {
+  const posts = await getAllPosts();
+  return [...new Set(posts.map((p) => p.tag))];
+}
+
 export async function getAllSlugs(): Promise<string[]> {
   const posts = await getAllPosts();
   return posts.map((p) => p.slug);

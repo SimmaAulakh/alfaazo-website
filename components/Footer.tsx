@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -28,19 +29,21 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-8 flex-wrap">
             {[
-              { label: "Privacy", href: "#" },
-              { label: "Terms", href: "#" },
+              { label: "About", href: "/about" },
+              { label: "Blog", href: "/blog" },
               { label: "Contact", href: "/contact" },
+              { label: "Privacy", href: "/privacy" },
+              { label: "Terms", href: "/terms" },
             ].map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 className="no-underline text-[0.82rem] text-warm-brown/45 hover:text-primary transition-colors duration-300"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
             <a
               href="https://www.instagram.com/alfaazoapp"

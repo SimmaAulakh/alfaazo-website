@@ -76,7 +76,9 @@ export default async function BlogPost({
         "@type": "Article",
         headline: post.title,
         description: post.excerpt,
+        image: `https://alfaazo.com/blog/${slug}/opengraph-image`,
         datePublished: post.date,
+        dateModified: post.date,
         author: {
           "@type": "Organization",
           name: "Codefeb",
@@ -184,6 +186,15 @@ export default async function BlogPost({
             <span>{post.readTime} read</span>
           </div>
         </div>
+
+        {/* Excerpt Summary */}
+        {post.excerpt && (
+          <div className="mb-10 p-5 rounded-2xl bg-primary/5 border-l-4 border-primary/40">
+            <p className="text-[0.95rem] text-warm-brown/70 leading-relaxed m-0 italic">
+              {post.excerpt}
+            </p>
+          </div>
+        )}
 
         {/* Blog Content */}
         <div
