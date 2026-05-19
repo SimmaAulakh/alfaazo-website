@@ -4,7 +4,7 @@ import { getAllSlugs, getAllTags } from "@/lib/blog";
 export const revalidate = 300;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://alfaazo.com";
+  const baseUrl = "https://www.alfaazo.com";
 
   const [blogSlugs, tags] = await Promise.all([getAllSlugs(), getAllTags()]);
 

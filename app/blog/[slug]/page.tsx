@@ -42,7 +42,7 @@ export async function generateMetadata({
       publishedTime: post.date,
       modifiedTime: post.date,
       authors: ["Codefeb"],
-      url: `https://alfaazo.com/blog/${slug}`,
+      url: `https://www.alfaazo.com/blog/${slug}`,
       siteName: "Alfaazo",
       locale: "en_US",
     },
@@ -52,7 +52,7 @@ export async function generateMetadata({
       description: post.excerpt,
     },
     alternates: {
-      canonical: `https://alfaazo.com/blog/${slug}`,
+      canonical: `https://www.alfaazo.com/blog/${slug}`,
     },
   };
 }
@@ -76,7 +76,7 @@ export default async function BlogPost({
         "@type": "Article",
         headline: post.title,
         description: post.excerpt,
-        image: `https://alfaazo.com/blog/${slug}/opengraph-image`,
+        image: `https://www.alfaazo.com/blog/${slug}/opengraph-image`,
         datePublished: post.date,
         dateModified: post.date,
         author: {
@@ -87,13 +87,13 @@ export default async function BlogPost({
         publisher: {
           "@type": "Organization",
           name: "Alfaazo",
-          url: "https://alfaazo.com",
+          url: "https://www.alfaazo.com",
           logo: {
             "@type": "ImageObject",
-            url: "https://alfaazo.com/logo.png",
+            url: "https://www.alfaazo.com/logo.png",
           },
         },
-        mainEntityOfPage: `https://alfaazo.com/blog/${slug}`,
+        mainEntityOfPage: `https://www.alfaazo.com/blog/${slug}`,
       },
       {
         "@type": "BreadcrumbList",
@@ -102,19 +102,19 @@ export default async function BlogPost({
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://alfaazo.com",
+            item: "https://www.alfaazo.com",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Blog",
-            item: "https://alfaazo.com/blog",
+            item: "https://www.alfaazo.com/blog",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: post.title,
-            item: `https://alfaazo.com/blog/${slug}`,
+            item: `https://www.alfaazo.com/blog/${slug}`,
           },
         ],
       },

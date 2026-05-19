@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     title: "Alfaazo — Best App to Learn Punjabi | Free on iOS & Android",
     description:
       "Master Punjabi — Gurmukhi script, everyday phrases, and real-world conversations. Bite-sized lessons crafted with cultural love. Free on iOS & Android.",
-    url: "https://alfaazo.com",
+    url: "https://www.alfaazo.com",
     siteName: "Alfaazo",
     type: "website",
     locale: "en_US",

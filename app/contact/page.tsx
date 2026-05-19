@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Get in touch with the Alfaazo team. Questions, feedback, or partnership inquiries — we'd love to hear from you.",
   alternates: {
-    canonical: "https://alfaazo.com/contact",
+    canonical: "https://www.alfaazo.com/contact",
   },
 };
 

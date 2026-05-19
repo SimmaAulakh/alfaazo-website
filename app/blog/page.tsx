@@ -9,13 +9,13 @@ export const metadata: Metadata = {
   description:
     "Tips, stories, and insights about learning Punjabi — Gurmukhi script guides, essential phrases, cultural context, and more from the Alfaazo journal.",
   alternates: {
-    canonical: "https://alfaazo.com/blog",
+    canonical: "https://www.alfaazo.com/blog",
   },
   openGraph: {
     title: "The Alfaazo Journal — Punjabi Language Tips & Insights",
     description:
       "Tips, stories, and insights about learning Punjabi and other South Asian languages.",
-    url: "https://alfaazo.com/blog",
+    url: "https://www.alfaazo.com/blog",
   },
 };
 

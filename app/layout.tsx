@@ -20,7 +20,7 @@ const notoNastaliq = Noto_Nastaliq_Urdu({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://alfaazo.com"),
+  metadataBase: new URL("https://www.alfaazo.com"),
   title: {
     default: "Alfaazo — Learn Punjabi with Bite-Sized Lessons | Free App",
     template: "%s — Alfaazo",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
       "Master Punjabi — Gurmukhi script, everyday phrases, and real-world conversations. Free on iOS & Android.",
     siteName: "Alfaazo",
     type: "website",
-    url: "https://alfaazo.com",
+    url: "https://www.alfaazo.com",
     locale: "en_US",
   },
   twitter: {
@@ -69,15 +69,15 @@ export const metadata: Metadata = {
     creator: "@codefeb",
   },
   alternates: {
-    canonical: "https://alfaazo.com",
+    canonical: "https://www.alfaazo.com",
   },
   itunes: {
     appId: "6759987308",
-    appArgument: "https://alfaazo.com",
+    appArgument: "https://www.alfaazo.com",
   },
   appLinks: {
     ios: {
-      url: "https://alfaazo.com",
+      url: "https://www.alfaazo.com",
       app_store_id: "6759987308",
     },
     android: {
@@ -85,7 +85,7 @@ export const metadata: Metadata = {
       app_name: "Alfaazo",
     },
     web: {
-      url: "https://alfaazo.com",
+      url: "https://www.alfaazo.com",
       should_fallback: true,
     },
   },
@@ -109,27 +109,27 @@ const jsonLd = {
       "@type": "Organization",
       name: "Codefeb",
       url: "https://codefeb.com",
-      logo: "https://alfaazo.com/logo.png",
+      logo: "https://www.alfaazo.com/logo.png",
       sameAs: [
         "https://www.instagram.com/alfaazoapp",
       ],
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "customer support",
-        url: "https://alfaazo.com/contact",
+        url: "https://www.alfaazo.com/contact",
       },
     },
     {
       "@type": "WebSite",
       name: "Alfaazo",
-      url: "https://alfaazo.com",
+      url: "https://www.alfaazo.com",
       inLanguage: "en",
       description:
         "Learn Punjabi with bite-sized lessons crafted with cultural love.",
       publisher: { "@type": "Organization", name: "Codefeb" },
       potentialAction: {
         "@type": "SearchAction",
-        target: "https://alfaazo.com/blog?q={search_term_string}",
+        target: "https://www.alfaazo.com/blog?q={search_term_string}",
         "query-input": "required name=search_term_string",
       },
     },
@@ -143,7 +143,7 @@ const jsonLd = {
       inLanguage: "en",
       teaches: "Punjabi language",
       availableLanguage: "pa",
-      url: "https://alfaazo.com",
+      url: "https://www.alfaazo.com",
     },
     {
       "@type": "MobileApplication",

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Alfaazo privacy policy — how we collect, use, and protect your data when using our Punjabi learning app and website.",
   alternates: {
-    canonical: "https://alfaazo.com/privacy",
+    canonical: "https://www.alfaazo.com/privacy",
   },
 };
 

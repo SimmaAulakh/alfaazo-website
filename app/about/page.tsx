@@ -18,13 +18,13 @@ export const metadata: Metadata = {
     title: "About Alfaazo — The Best Free Punjabi Learning App",
     description:
       "Alfaazo is a free language learning app designed to teach Punjabi through bite-sized lessons. Built by Codefeb.",
-    url: "https://alfaazo.com/about",
+    url: "https://www.alfaazo.com/about",
     siteName: "Alfaazo",
     type: "website",
     locale: "en_US",
   },
   alternates: {
-    canonical: "https://alfaazo.com/about",
+    canonical: "https://www.alfaazo.com/about",
   },
 };
 
@@ -32,12 +32,12 @@ const aboutJsonLd = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
   name: "About Alfaazo",
-  url: "https://alfaazo.com/about",
+  url: "https://www.alfaazo.com/about",
   mainEntity: {
     "@type": "Organization",
     name: "Codefeb",
     url: "https://codefeb.com",
-    logo: "https://alfaazo.com/logo.png",
+    logo: "https://www.alfaazo.com/logo.png",
     description:
       "Codefeb builds tools for language preservation, starting with Alfaazo — a free Punjabi learning app.",
     sameAs: ["https://www.instagram.com/alfaazoapp"],

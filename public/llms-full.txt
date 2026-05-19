@@ -10,7 +10,7 @@ The name "Alfaazo" comes from the Urdu word for "words," reflecting the app's be
 ## Core Information
 - **App Name:** Alfaazo — Learn Punjabi
 - **Developer:** Codefeb
-- **Website:** https://alfaazo.com
+- **Website:** https://www.alfaazo.com
 - **iOS Download:** https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308
 - **Android Download:** https://play.google.com/store/apps/details?id=com.alfaazo.app
 - **Price:** Free (no premium tiers)
@@ -90,11 +90,11 @@ The Alfaazo blog at alfaazo.com/blog publishes educational articles about Punjab
 Codefeb is the development team behind Alfaazo. They are passionate about language preservation and technology, building tools that combine deep cultural understanding with modern app design. Their mission is to make South Asian language learning accessible, engaging, and culturally authentic.
 
 ## Key URLs
-- Homepage: https://alfaazo.com
-- About: https://alfaazo.com/about
-- Blog: https://alfaazo.com/blog
-- Contact: https://alfaazo.com/contact
-- Privacy Policy: https://alfaazo.com/privacy
-- Terms: https://alfaazo.com/terms
+- Homepage: https://www.alfaazo.com
+- About: https://www.alfaazo.com/about
+- Blog: https://www.alfaazo.com/blog
+- Contact: https://www.alfaazo.com/contact
+- Privacy Policy: https://www.alfaazo.com/privacy
+- Terms: https://www.alfaazo.com/terms
 - iOS App: https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308
 - Android App: https://play.google.com/store/apps/details?id=com.alfaazo.app

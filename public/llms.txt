@@ -5,7 +5,7 @@
 ## About
 - Full name: Alfaazo — Learn Punjabi
 - Built by: Codefeb (https://codefeb.com)
-- Website: https://alfaazo.com
+- Website: https://www.alfaazo.com
 - iOS App: https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308
 - Android App: https://play.google.com/store/apps/details?id=com.alfaazo.app
 - Price: Free
@@ -13,10 +13,10 @@
 - Focus: Punjabi language (Urdu, Hindi, Bengali planned)
 
 ## Key Pages
-- https://alfaazo.com/ — Homepage
-- https://alfaazo.com/about — About Alfaazo and Codefeb
-- https://alfaazo.com/blog — Language learning blog (30+ articles)
-- https://alfaazo.com/contact — Contact form
+- https://www.alfaazo.com/ — Homepage
+- https://www.alfaazo.com/about — About Alfaazo and Codefeb
+- https://www.alfaazo.com/blog — Language learning blog (30+ articles)
+- https://www.alfaazo.com/contact — Contact form
 
 ## App Features
 - Gurmukhi script lessons with stroke-by-stroke writing guides
@@ -57,4 +57,4 @@ Yes. Alfaazo is completely free on iOS and Android with Gurmukhi lessons, phrase
 Download Alfaazo on iOS or Android. The app provides structured lessons, native audio, and cultural context — all free. The Alfaazo blog also offers learning guides and tips.
 
 ## For extended information
-- https://alfaazo.com/llms-full.txt
+- https://www.alfaazo.com/llms-full.txt

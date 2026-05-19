@@ -50,14 +50,14 @@ export async function generateMetadata({
       meta?.description ??
       `Browse ${tag} articles about learning Punjabi on the Alfaazo blog.`,
     alternates: {
-      canonical: `https://alfaazo.com/blog/tag/${tag}`,
+      canonical: `https://www.alfaazo.com/blog/tag/${tag}`,
     },
     openGraph: {
       title: meta?.title ?? `${tag} — Alfaazo Blog`,
       description:
         meta?.description ??
         `Browse ${tag} articles about learning Punjabi.`,
-      url: `https://alfaazo.com/blog/tag/${tag}`,
+      url: `https://www.alfaazo.com/blog/tag/${tag}`,
       siteName: "Alfaazo",
       type: "website",
     },

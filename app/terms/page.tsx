@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Terms of service for using the Alfaazo Punjabi learning app and website.",
   alternates: {
-    canonical: "https://alfaazo.com/terms",
+    canonical: "https://www.alfaazo.com/terms",
   },
 };
 

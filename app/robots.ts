@@ -32,6 +32,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://alfaazo.com/sitemap.xml",
+    sitemap: "https://www.alfaazo.com/sitemap.xml",
   };
 }
