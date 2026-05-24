@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s — Alfaazo",
   },
   description:
-    "Alfaazo is a free language learning app to master Punjabi — Gurmukhi script, everyday phrases, and real-world conversations. Bite-sized lessons crafted with cultural love. Download on iOS and Android.",
+    "Free app to learn Punjabi. Master Gurmukhi script, everyday phrases, and conversations with native audio. Bite-sized lessons. iOS & Android.",
   keywords: [
     "learn Punjabi",
     "best app to learn Punjabi",

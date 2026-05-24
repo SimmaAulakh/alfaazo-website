@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     absolute: "Alfaazo — Best App to Learn Punjabi | Free on iOS & Android",
   },
   description:
-    "Alfaazo is the best free app to learn Punjabi. Master Gurmukhi script with stroke-by-stroke guides, everyday Punjabi phrases with native audio, and real-world conversations — all through bite-sized lessons. Download free on iOS and Android.",
+    "The best free app to learn Punjabi. Master Gurmukhi script, everyday phrases, and real conversations with native audio. Free on iOS & Android.",
   keywords: [
     "learn Punjabi",
     "best app to learn Punjabi",
