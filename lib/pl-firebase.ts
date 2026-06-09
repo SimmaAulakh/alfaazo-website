@@ -20,6 +20,7 @@
 import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
+import { getFunctions, type Functions } from "firebase/functions";
 
 const plConfig = {
   apiKey: process.env.NEXT_PUBLIC_PL_FIREBASE_API_KEY,
@@ -32,9 +33,13 @@ const plConfig = {
 
 const PL_APP_NAME = "pl";
 
+// Callable functions live in us-central1 (must match the deployed region).
+const PL_FUNCTIONS_REGION = "us-central1";
+
 let cachedApp: FirebaseApp | undefined;
 let cachedDb: Firestore | undefined;
 let cachedAuth: Auth | undefined;
+let cachedFunctions: Functions | undefined;
 
 function plApp(): FirebaseApp {
   if (!cachedApp) {
@@ -55,6 +60,14 @@ export function plDb(): Firestore {
 export function plAuth(): Auth {
   if (!cachedAuth) cachedAuth = getAuth(plApp());
   return cachedAuth;
+}
+
+/** Cloud Functions for the punjabilingo-d02cc project (lazy). */
+export function plFunctions(): Functions {
+  if (!cachedFunctions) {
+    cachedFunctions = getFunctions(plApp(), PL_FUNCTIONS_REGION);
+  }
+  return cachedFunctions;
 }
 
 // A provider is just a config object — safe to construct eagerly (no app init).

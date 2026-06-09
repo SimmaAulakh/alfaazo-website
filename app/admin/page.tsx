@@ -1,14 +1,50 @@
 "use client";
 
+import { useState } from "react";
 import { useAggregates, latest, compact } from "@/lib/aggregates";
+import { getUsersByStreak, type StreakUser } from "@/lib/admin-users";
 import Scorecard from "@/components/admin/Scorecard";
 import TrendLineChart from "@/components/admin/TrendLineChart";
 import DistributionBar from "@/components/admin/DistributionBar";
 import LessonCompletionList from "@/components/admin/LessonCompletionList";
+import UserListModal from "@/components/admin/UserListModal";
+
+interface StreakDrill {
+  label: string;
+  loading: boolean;
+  error: string | null;
+  users: StreakUser[];
+  truncated: boolean;
+}
 
 export default function AdminDashboardPage() {
   const { data, loading, error } = useAggregates(30);
   const newest = latest(data);
+  const [drill, setDrill] = useState<StreakDrill | null>(null);
+
+  async function openStreakUsers(label: string, value: number) {
+    if (value <= 0) return; // empty bucket — nothing to show
+    const streak = label.endsWith("+") ? 90 : Number(label);
+    setDrill({ label, loading: true, error: null, users: [], truncated: false });
+    try {
+      const res = await getUsersByStreak(streak);
+      setDrill({
+        label,
+        loading: false,
+        error: null,
+        users: res.users,
+        truncated: res.truncated,
+      });
+    } catch (e) {
+      setDrill({
+        label,
+        loading: false,
+        error: e instanceof Error ? e.message : "Failed to load users",
+        users: [],
+        truncated: false,
+      });
+    }
+  }
 
   if (loading) {
     return <p className="text-sm text-text-secondary">Loading metrics…</p>;
@@ -135,12 +171,13 @@ export default function AdminDashboardPage() {
         />
       </section>
 
-      {/* Streak histogram — full width for the granular per-day view */}
+      {/* Streak histogram — full width; click a bar to see those users */}
       <section>
         <DistributionBar
-          title={`Streak distribution (per day) · ${newest.avgStreak} avg`}
+          title={`Streak distribution (per day) · ${newest.avgStreak} avg · click a bar for users`}
           data={streakData}
           color="var(--color-streak-orange)"
+          onBarClick={openStreakUsers}
         />
       </section>
 
@@ -179,6 +216,20 @@ export default function AdminDashboardPage() {
         reflect the state at the time each day was computed; backfilled past days
         show today’s state for those fields.
       </p>
+
+      <UserListModal
+        open={drill !== null}
+        title={
+          drill
+            ? `Users on a ${drill.label}-day streak`
+            : ""
+        }
+        loading={drill?.loading ?? false}
+        error={drill?.error ?? null}
+        users={drill?.users ?? []}
+        truncated={drill?.truncated}
+        onClose={() => setDrill(null)}
+      />
     </div>
   );
 }
