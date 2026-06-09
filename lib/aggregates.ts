@@ -18,6 +18,10 @@ export interface StreakDistribution {
 
 export type LevelDistribution = Record<string, number>; // "1".."8"
 
+// Exact streak day-count -> user count, sparse. Keys are "0","1","2",… plus an
+// optional "90+" overflow bucket for very long streaks.
+export type StreakHistogram = Record<string, number>;
+
 export interface LanguageBackground {
   beginner: number;
   basic: number;
@@ -36,6 +40,7 @@ export interface DailyAggregate {
   onboardingCompletePct: number;
   avgStreak: number;
   streakDistribution: StreakDistribution;
+  streakHistogram?: StreakHistogram;
   levelDistribution: LevelDistribution;
   lessonCompletion: LessonCompletion;
   totalXpEarnedYesterday: number;

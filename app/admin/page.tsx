@@ -43,12 +43,22 @@ export default function AdminDashboardPage() {
     "Onboarding %": d.onboardingCompletePct,
   }));
 
-  const streakData = [
-    { label: "0", value: newest.streakDistribution["0"] ?? 0 },
-    { label: "1-6", value: newest.streakDistribution["1-6"] ?? 0 },
-    { label: "7-29", value: newest.streakDistribution["7-29"] ?? 0 },
-    { label: "30+", value: newest.streakDistribution["30+"] ?? 0 },
-  ];
+  // Per-value streak histogram (0, 1, 2, …). Auto-sizes to the max streak
+  // present, fills gaps with 0, and appends the "90+" overflow bucket if any.
+  const sh = newest.streakHistogram ?? {};
+  const overflowKey = Object.keys(sh).find((k) => k.endsWith("+"));
+  const numericKeys = Object.keys(sh)
+    .filter((k) => !k.endsWith("+"))
+    .map(Number)
+    .filter((n) => Number.isFinite(n));
+  const maxStreak = numericKeys.length ? Math.max(...numericKeys) : 0;
+  const streakData: Array<{ label: string; value: number }> = Array.from(
+    { length: maxStreak + 1 },
+    (_, i) => ({ label: String(i), value: sh[String(i)] ?? 0 }),
+  );
+  if (overflowKey && (sh[overflowKey] ?? 0) > 0) {
+    streakData.push({ label: overflowKey, value: sh[overflowKey] });
+  }
 
   const levelData = Array.from({ length: 8 }, (_, i) => {
     const lvl = String(i + 1);
@@ -125,13 +135,17 @@ export default function AdminDashboardPage() {
         />
       </section>
 
-      {/* Distributions */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Streak histogram — full width for the granular per-day view */}
+      <section>
         <DistributionBar
-          title="Streak distribution"
+          title={`Streak distribution (per day) · ${newest.avgStreak} avg`}
           data={streakData}
           color="var(--color-streak-orange)"
         />
+      </section>
+
+      {/* Level distribution */}
+      <section>
         <DistributionBar
           title="Level distribution"
           data={levelData}
