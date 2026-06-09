@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAggregates, latest, compact } from "@/lib/aggregates";
+import { useRetention } from "@/lib/retention";
 import {
   getUsersByStreak,
   getPaidUsers,
@@ -11,6 +12,7 @@ import Scorecard from "@/components/admin/Scorecard";
 import TrendLineChart from "@/components/admin/TrendLineChart";
 import DistributionBar from "@/components/admin/DistributionBar";
 import LessonCompletionList from "@/components/admin/LessonCompletionList";
+import RetentionTable from "@/components/admin/RetentionTable";
 import UserListModal from "@/components/admin/UserListModal";
 
 interface UserDrill {
@@ -23,6 +25,7 @@ interface UserDrill {
 
 export default function AdminDashboardPage() {
   const { data, loading, error } = useAggregates(30);
+  const retention = useRetention();
   const newest = latest(data);
   const [drill, setDrill] = useState<UserDrill | null>(null);
 
@@ -193,6 +196,15 @@ export default function AdminDashboardPage() {
               color: "var(--color-soft-gold)",
             },
           ]}
+        />
+      </section>
+
+      {/* Retention cohorts */}
+      <section>
+        <RetentionTable
+          data={retention.data}
+          loading={retention.loading}
+          error={retention.error}
         />
       </section>
 
