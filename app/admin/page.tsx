@@ -6,12 +6,13 @@ import { useRetention } from "@/lib/retention";
 import {
   getUsersByStreak,
   getPaidUsers,
+  getCohortChurnedUsers,
   type AdminUser,
 } from "@/lib/admin-users";
 import Scorecard from "@/components/admin/Scorecard";
 import TrendLineChart from "@/components/admin/TrendLineChart";
 import DistributionBar from "@/components/admin/DistributionBar";
-import LessonCompletionList from "@/components/admin/LessonCompletionList";
+import LessonFunnel from "@/components/admin/LessonFunnel";
 import RetentionTable from "@/components/admin/RetentionTable";
 import UserListModal from "@/components/admin/UserListModal";
 
@@ -63,6 +64,17 @@ export default function AdminDashboardPage() {
 
   function openPaidUsers() {
     runDrill("Paid users", () => getPaidUsers());
+  }
+
+  function openCohortChurned(weekStart: string, size: number) {
+    const label = new Date(`${weekStart}T00:00:00Z`).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      timeZone: "UTC",
+    });
+    runDrill(`Churned — week of ${label} (${size} signups)`, () =>
+      getCohortChurnedUsers(weekStart),
+    );
   }
 
   if (loading) {
@@ -205,6 +217,7 @@ export default function AdminDashboardPage() {
           data={retention.data}
           loading={retention.loading}
           error={retention.error}
+          onCohortClick={openCohortChurned}
         />
       </section>
 
@@ -228,10 +241,7 @@ export default function AdminDashboardPage() {
       </section>
 
       <section>
-        <LessonCompletionList
-          title="Top 10 lessons by completion rate"
-          completion={newest.lessonCompletion}
-        />
+        <LessonFunnel completion={newest.lessonCompletion} />
       </section>
 
       {/* Avg streak + language background as a small strip */}

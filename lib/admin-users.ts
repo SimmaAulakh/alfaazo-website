@@ -54,3 +54,22 @@ export async function getPaidUsers(): Promise<PaidUsersResult> {
   const res = await callable({});
   return res.data;
 }
+
+export interface CohortChurnResult {
+  weekStart: string;
+  count: number;
+  truncated: boolean;
+  users: AdminUser[];
+}
+
+/** Users in a signup-week cohort who never returned after their signup day. */
+export async function getCohortChurnedUsers(
+  weekStart: string,
+): Promise<CohortChurnResult> {
+  const callable = httpsCallable<{ weekStart: string }, CohortChurnResult>(
+    plFunctions(),
+    "getCohortChurnedUsers",
+  );
+  const res = await callable({ weekStart });
+  return res.data;
+}

@@ -6,6 +6,8 @@ interface RetentionTableProps {
   data: RetentionResult | null;
   loading: boolean;
   error: string | null;
+  /** When set, cohort rows are clickable (to drill into churned users). */
+  onCohortClick?: (weekStart: string, size: number) => void;
 }
 
 /** Format "YYYY-MM-DD" → "Apr 7". */
@@ -42,15 +44,22 @@ function Cell({ pct, n }: { pct: number | null; n: number }) {
   );
 }
 
-export default function RetentionTable({ data, loading, error }: RetentionTableProps) {
+export default function RetentionTable({
+  data,
+  loading,
+  error,
+  onCohortClick,
+}: RetentionTableProps) {
+  const clickable = Boolean(onCohortClick);
   return (
     <div className="rounded-2xl bg-surface border border-primary/10 p-5 shadow-sm">
       <h3 className="text-sm font-semibold text-primary-dark mb-1">
         Retention by signup week
       </h3>
       <p className="text-xs text-text-secondary mb-4">
-        % of each weekly cohort active 1 / 7 / 30 days after signing up. “—” means
-        not enough time has passed yet for that cohort.
+        % of each weekly cohort active 1 / 3 / 7 / 14 / 30 days after signing up.
+        “—” means not enough time has passed yet.
+        {clickable ? " Click a cohort row to list users who never returned." : ""}
       </p>
 
       {loading ? (
@@ -70,7 +79,9 @@ export default function RetentionTable({ data, loading, error }: RetentionTableP
                 <th className="px-3 py-2 text-left font-medium">Cohort</th>
                 <th className="px-3 py-2 text-right font-medium">Users</th>
                 <th className="px-3 py-2 text-center font-medium">D1</th>
+                <th className="px-3 py-2 text-center font-medium">D3</th>
                 <th className="px-3 py-2 text-center font-medium">D7</th>
+                <th className="px-3 py-2 text-center font-medium">D14</th>
                 <th className="px-3 py-2 text-center font-medium">D30</th>
               </tr>
             </thead>
@@ -82,11 +93,23 @@ export default function RetentionTable({ data, loading, error }: RetentionTableP
                   {data.totalUsers}
                 </td>
                 <Cell pct={data.overall.d1} n={data.overall.d1n} />
+                <Cell pct={data.overall.d3} n={data.overall.d3n} />
                 <Cell pct={data.overall.d7} n={data.overall.d7n} />
+                <Cell pct={data.overall.d14} n={data.overall.d14n} />
                 <Cell pct={data.overall.d30} n={data.overall.d30n} />
               </tr>
               {data.cohorts.map((c) => (
-                <tr key={c.weekStart} className="border-b border-primary/5">
+                <tr
+                  key={c.weekStart}
+                  onClick={
+                    onCohortClick
+                      ? () => onCohortClick(c.weekStart, c.size)
+                      : undefined
+                  }
+                  className={`border-b border-primary/5${
+                    clickable ? " cursor-pointer hover:bg-primary/[0.04]" : ""
+                  }`}
+                >
                   <td className="px-3 py-2 text-left text-warm-brown">
                     {fmtWeek(c.weekStart)}
                   </td>
@@ -94,7 +117,9 @@ export default function RetentionTable({ data, loading, error }: RetentionTableP
                     {c.size}
                   </td>
                   <Cell pct={c.d1} n={c.d1n} />
+                  <Cell pct={c.d3} n={c.d3n} />
                   <Cell pct={c.d7} n={c.d7n} />
+                  <Cell pct={c.d14} n={c.d14n} />
                   <Cell pct={c.d30} n={c.d30n} />
                 </tr>
               ))}

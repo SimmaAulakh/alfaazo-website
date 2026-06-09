@@ -8,25 +8,25 @@ import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { plFunctions } from "./pl-firebase";
 
-export interface RetentionCohort {
-  weekStart: string; // "YYYY-MM-DD" (Monday)
-  size: number;
+export interface RetentionMilestones {
   d1: number | null; // % retained at D1, or null if no mature users
   d1n: number; // mature-user count (denominator)
+  d3: number | null;
+  d3n: number;
   d7: number | null;
   d7n: number;
+  d14: number | null;
+  d14n: number;
   d30: number | null;
   d30n: number;
 }
 
-export interface RetentionOverall {
-  d1: number | null;
-  d1n: number;
-  d7: number | null;
-  d7n: number;
-  d30: number | null;
-  d30n: number;
+export interface RetentionCohort extends RetentionMilestones {
+  weekStart: string; // "YYYY-MM-DD" (Monday)
+  size: number;
 }
+
+export type RetentionOverall = RetentionMilestones;
 
 export interface RetentionResult {
   totalUsers: number;
