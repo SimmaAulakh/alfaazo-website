@@ -7,6 +7,7 @@ import {
   getUsersByStreak,
   getPaidUsers,
   getCohortChurnedUsers,
+  useCompletedAll,
   type AdminUser,
 } from "@/lib/admin-users";
 import Scorecard from "@/components/admin/Scorecard";
@@ -27,6 +28,7 @@ interface UserDrill {
 export default function AdminDashboardPage() {
   const { data, loading, error } = useAggregates(30);
   const retention = useRetention();
+  const completedAll = useCompletedAll();
   const newest = latest(data);
   const [drill, setDrill] = useState<UserDrill | null>(null);
 
@@ -64,6 +66,18 @@ export default function AdminDashboardPage() {
 
   function openPaidUsers() {
     runDrill("Paid users", () => getPaidUsers());
+  }
+
+  function openCompletedAll() {
+    const d = completedAll.data;
+    if (!d) return;
+    setDrill({
+      title: `Finished all ${d.totalLessons} lessons`,
+      loading: false,
+      error: null,
+      users: d.users,
+      truncated: d.truncated,
+    });
   }
 
   function openCohortChurned(weekStart: string, size: number) {
@@ -237,6 +251,33 @@ export default function AdminDashboardPage() {
           title="Level distribution"
           data={levelData}
           color="var(--color-primary)"
+        />
+      </section>
+
+      {/* Course completion — content-exhaustion signal */}
+      <section className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <Scorecard
+          label="Finished all lessons"
+          value={completedAll.loading ? "…" : completedAll.data?.completedAllCount ?? 0}
+          accent="var(--color-secondary)"
+          hint={
+            completedAll.data ? `of ${completedAll.data.totalLessons} · click for list` : undefined
+          }
+          onClick={completedAll.data ? openCompletedAll : undefined}
+        />
+        <Scorecard
+          label="Near finishing"
+          value={completedAll.loading ? "…" : completedAll.data?.nearDoneCount ?? 0}
+          hint={
+            completedAll.data
+              ? `within 5 of all ${completedAll.data.totalLessons}`
+              : undefined
+          }
+        />
+        <Scorecard
+          label="Total lessons"
+          value={completedAll.data?.totalLessons ?? "—"}
+          hint="in the course"
         />
       </section>
 
