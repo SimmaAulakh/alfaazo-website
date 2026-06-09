@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import type { StreakUser } from "@/lib/admin-users";
+import type { AdminUser } from "@/lib/admin-users";
 
 interface UserListModalProps {
   open: boolean;
   title: string;
   loading: boolean;
   error: string | null;
-  users: StreakUser[];
+  users: AdminUser[];
   truncated?: boolean;
   onClose: () => void;
 }
@@ -72,8 +72,13 @@ export default function UserListModal({
             <ul className="flex flex-col divide-y divide-primary/5">
               {users.map((u) => (
                 <li key={u.uid} className="py-3 flex flex-col gap-0.5">
-                  <span className="text-sm font-medium text-ink">
+                  <span className="text-sm font-medium text-ink flex items-center gap-2">
                     {u.name || <span className="text-text-secondary italic">No name</span>}
+                    {u.plan && (
+                      <span className="text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-secondary/15 text-secondary">
+                        {u.plan}
+                      </span>
+                    )}
                   </span>
                   <span className="text-xs text-warm-brown/80 break-all">
                     {u.email || "—"}

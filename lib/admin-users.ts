@@ -1,24 +1,34 @@
 /**
- * Admin drill-down: fetch the users on a given streak via the gated
- * getUsersByStreak callable (admin-only, server-side query in
- * punjabilingo-d02cc). Returns minimal PII for display in the dashboard.
+ * Admin drill-downs: fetch user lists via gated callables (admin-only,
+ * server-side queries in punjabilingo-d02cc). Return minimal PII for display.
  */
 "use client";
 
 import { httpsCallable } from "firebase/functions";
 import { plFunctions } from "./pl-firebase";
 
-export interface StreakUser {
+export interface AdminUser {
   uid: string;
   name: string | null;
   email: string | null;
+  /** Optional badge, e.g. subscription plan ("monthly" | "yearly"). */
+  plan?: string | null;
 }
+
+/** Back-compat alias. */
+export type StreakUser = AdminUser;
 
 export interface StreakUsersResult {
   streak: number;
   count: number;
   truncated: boolean;
-  users: StreakUser[];
+  users: AdminUser[];
+}
+
+export interface PaidUsersResult {
+  count: number;
+  truncated: boolean;
+  users: AdminUser[];
 }
 
 /**
@@ -32,5 +42,15 @@ export async function getUsersByStreak(
     "getUsersByStreak",
   );
   const res = await callable({ streak });
+  return res.data;
+}
+
+/** Users whose subscription.isPremium === true (with their plan). */
+export async function getPaidUsers(): Promise<PaidUsersResult> {
+  const callable = httpsCallable<Record<string, never>, PaidUsersResult>(
+    plFunctions(),
+    "getPaidUsers",
+  );
+  const res = await callable({});
   return res.data;
 }

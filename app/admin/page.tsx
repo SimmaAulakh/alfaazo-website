@@ -2,34 +2,40 @@
 
 import { useState } from "react";
 import { useAggregates, latest, compact } from "@/lib/aggregates";
-import { getUsersByStreak, type StreakUser } from "@/lib/admin-users";
+import {
+  getUsersByStreak,
+  getPaidUsers,
+  type AdminUser,
+} from "@/lib/admin-users";
 import Scorecard from "@/components/admin/Scorecard";
 import TrendLineChart from "@/components/admin/TrendLineChart";
 import DistributionBar from "@/components/admin/DistributionBar";
 import LessonCompletionList from "@/components/admin/LessonCompletionList";
 import UserListModal from "@/components/admin/UserListModal";
 
-interface StreakDrill {
-  label: string;
+interface UserDrill {
+  title: string;
   loading: boolean;
   error: string | null;
-  users: StreakUser[];
+  users: AdminUser[];
   truncated: boolean;
 }
 
 export default function AdminDashboardPage() {
   const { data, loading, error } = useAggregates(30);
   const newest = latest(data);
-  const [drill, setDrill] = useState<StreakDrill | null>(null);
+  const [drill, setDrill] = useState<UserDrill | null>(null);
 
-  async function openStreakUsers(label: string, value: number) {
-    if (value <= 0) return; // empty bucket — nothing to show
-    const streak = label.endsWith("+") ? 90 : Number(label);
-    setDrill({ label, loading: true, error: null, users: [], truncated: false });
+  // Runs an async user-list fetch behind a shared modal (loading → result).
+  async function runDrill(
+    title: string,
+    fetcher: () => Promise<{ users: AdminUser[]; truncated: boolean }>,
+  ) {
+    setDrill({ title, loading: true, error: null, users: [], truncated: false });
     try {
-      const res = await getUsersByStreak(streak);
+      const res = await fetcher();
       setDrill({
-        label,
+        title,
         loading: false,
         error: null,
         users: res.users,
@@ -37,13 +43,23 @@ export default function AdminDashboardPage() {
       });
     } catch (e) {
       setDrill({
-        label,
+        title,
         loading: false,
         error: e instanceof Error ? e.message : "Failed to load users",
         users: [],
         truncated: false,
       });
     }
+  }
+
+  function openStreakUsers(label: string, value: number) {
+    if (value <= 0) return; // empty bucket — nothing to show
+    const streak = label.endsWith("+") ? 90 : Number(label);
+    runDrill(`Users on a ${label}-day streak`, () => getUsersByStreak(streak));
+  }
+
+  function openPaidUsers() {
+    runDrill("Paid users", () => getPaidUsers());
   }
 
   if (loading) {
@@ -104,6 +120,7 @@ export default function AdminDashboardPage() {
   const sparkDau = data.map((d) => d.dau);
   const sparkSignups = data.map((d) => d.newUsers);
   const sparkXp = data.map((d) => d.totalXpEarnedYesterday);
+  const sparkPaid = data.map((d) => d.paidUsers ?? 0);
 
   return (
     <div className="flex flex-col gap-8">
@@ -118,7 +135,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Scorecards */}
-      <section className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+      <section className="grid grid-cols-2 lg:grid-cols-6 gap-4">
         <Scorecard label="Total users" value={compact(newest.totalUsers)} />
         <Scorecard
           label="New signups"
@@ -145,6 +162,14 @@ export default function AdminDashboardPage() {
           sparkline={sparkXp}
           accent="var(--color-xp-gold)"
           hint="yesterday"
+        />
+        <Scorecard
+          label="Paid users"
+          value={compact(newest.paidUsers ?? 0)}
+          sparkline={sparkPaid}
+          accent="var(--color-secondary)"
+          hint="click for list"
+          onClick={openPaidUsers}
         />
       </section>
 
@@ -211,19 +236,15 @@ export default function AdminDashboardPage() {
 
       <p className="text-xs text-text-secondary border-t border-primary/10 pt-4">
         <strong>Data quality:</strong> DAU, new signups, and XP earned are
-        time-windowed and historically accurate. Snapshot metrics (totals,
-        onboarding %, streak / level / language distributions, lesson completion)
-        reflect the state at the time each day was computed; backfilled past days
-        show today’s state for those fields.
+        time-windowed and historically accurate. Snapshot metrics (totals, paid
+        users, onboarding %, streak / level / language distributions, lesson
+        completion) reflect the state at the time each day was computed;
+        backfilled past days show today’s state for those fields.
       </p>
 
       <UserListModal
         open={drill !== null}
-        title={
-          drill
-            ? `Users on a ${drill.label}-day streak`
-            : ""
-        }
+        title={drill?.title ?? ""}
         loading={drill?.loading ?? false}
         error={drill?.error ?? null}
         users={drill?.users ?? []}

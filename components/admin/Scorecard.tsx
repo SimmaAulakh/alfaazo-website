@@ -10,6 +10,8 @@ interface ScorecardProps {
   /** Tailwind color class for the sparkline stroke, e.g. "var(--color-primary)". */
   accent?: string;
   hint?: string;
+  /** When set, the card becomes clickable. */
+  onClick?: () => void;
 }
 
 export default function Scorecard({
@@ -18,11 +20,32 @@ export default function Scorecard({
   sparkline,
   accent = "var(--color-primary)",
   hint,
+  onClick,
 }: ScorecardProps) {
   const sparkData = sparkline?.map((v, i) => ({ i, v })) ?? [];
+  const clickable = Boolean(onClick);
 
   return (
-    <div className="rounded-2xl bg-surface border border-primary/10 p-5 shadow-sm flex flex-col gap-1">
+    <div
+      onClick={onClick}
+      role={clickable ? "button" : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      onKeyDown={
+        clickable
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick?.();
+              }
+            }
+          : undefined
+      }
+      className={`rounded-2xl bg-surface border border-primary/10 p-5 shadow-sm flex flex-col gap-1${
+        clickable
+          ? " cursor-pointer transition-colors hover:border-primary/40"
+          : ""
+      }`}
+    >
       <span className="text-xs font-medium uppercase tracking-wide text-text-secondary">
         {label}
       </span>

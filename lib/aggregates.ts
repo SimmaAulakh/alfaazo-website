@@ -38,6 +38,7 @@ export interface DailyAggregate {
   dau: number;
   onboardingCompleteCount: number;
   onboardingCompletePct: number;
+  paidUsers?: number;
   avgStreak: number;
   streakDistribution: StreakDistribution;
   streakHistogram?: StreakHistogram;
