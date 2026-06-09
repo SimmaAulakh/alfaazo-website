@@ -21,6 +21,7 @@ import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, type Auth } from "firebase/auth";
 import { getFunctions, type Functions } from "firebase/functions";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const plConfig = {
   apiKey: process.env.NEXT_PUBLIC_PL_FIREBASE_API_KEY,
@@ -46,6 +47,22 @@ function plApp(): FirebaseApp {
     cachedApp =
       getApps().find((a) => a.name === PL_APP_NAME) ??
       initializeApp(plConfig, PL_APP_NAME);
+
+    // App Check (optional, free via reCAPTCHA v3). Only initialized in the
+    // browser when a site key is configured — a no-op otherwise, so it never
+    // affects SSR/prerender or local dev, and can't lock anyone out until
+    // enforcement is enabled in the Firebase console.
+    const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+    if (typeof window !== "undefined" && siteKey) {
+      try {
+        initializeAppCheck(cachedApp, {
+          provider: new ReCaptchaV3Provider(siteKey),
+          isTokenAutoRefreshEnabled: true,
+        });
+      } catch {
+        // already initialized or unavailable — non-fatal
+      }
+    }
   }
   return cachedApp;
 }
