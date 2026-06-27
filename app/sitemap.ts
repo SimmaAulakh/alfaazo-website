@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllSlugs, getAllTags } from "@/lib/blog";
+import { AUTHORS } from "@/lib/authors";
 
 export const revalidate = 300;
 
@@ -50,6 +51,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.5,
+    })),
+    ...AUTHORS.map((a) => ({
+      url: `${baseUrl}/author/${a.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.4,
     })),
     ...blogSlugs.map((slug) => ({
       url: `${baseUrl}/blog/${slug}`,

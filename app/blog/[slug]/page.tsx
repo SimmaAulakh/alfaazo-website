@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllSlugs, getPostBySlug, getRecentPosts } from "@/lib/blog";
+import { getAuthorByName } from "@/lib/authors";
 
 export const revalidate = 300;
 
@@ -126,6 +127,7 @@ export default async function BlogPost({
 
   const allRecent = await getRecentPosts(4);
   const relatedPosts = allRecent.filter((p) => p.slug !== slug).slice(0, 3);
+  const authorInfo = getAuthorByName(post.author);
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -140,6 +142,9 @@ export default async function BlogPost({
         author: {
           "@type": "Person",
           name: post.author,
+          ...(authorInfo
+            ? { url: `https://www.alfaazo.com/author/${authorInfo.slug}` }
+            : {}),
         },
         publisher: {
           "@type": "Organization",
@@ -260,7 +265,19 @@ export default async function BlogPost({
           </h1>
 
           <div className="flex gap-4 text-sm text-warm-brown/50">
-            <span>By {post.author}</span>
+            <span>
+              By{" "}
+              {authorInfo ? (
+                <Link
+                  href={`/author/${authorInfo.slug}`}
+                  className="text-warm-brown/60 hover:text-primary transition-colors no-underline"
+                >
+                  {post.author}
+                </Link>
+              ) : (
+                post.author
+              )}
+            </span>
             <span>&middot;</span>
             <span>
               {new Date(post.date).toLocaleDateString("en-US", {
