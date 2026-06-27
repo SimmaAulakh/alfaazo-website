@@ -41,7 +41,7 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.date,
       modifiedTime: post.date,
-      authors: ["Codefeb"],
+      authors: [post.author],
       url: `https://www.alfaazo.com/blog/${slug}`,
       siteName: "Alfaazo",
       locale: "en_US",
@@ -92,6 +92,29 @@ function extractFaqs(html: string): { question: string; answer: string }[] {
   return faqs;
 }
 
+// Pulls ordered steps out of a "step-by-step" section so procedural posts can
+// emit HowTo structured data. Convention: a heading containing "step by step"
+// (or "step-by-step") followed by an <ol>; each <li> becomes a step. Posts
+// without that pattern yield nothing (and no HowTo schema).
+function extractHowToSteps(html: string): string[] {
+  const section = html.match(
+    /<h[23][^>]*>[^<]*step[\s-]?by[\s-]?step[^<]*<\/h[23]>([\s\S]*?)(?=<h2[\s>]|$)/i
+  );
+  if (!section) return [];
+
+  const ol = section[1].match(/<ol[^>]*>([\s\S]*?)<\/ol>/i);
+  if (!ol) return [];
+
+  const steps: string[] = [];
+  const li = /<li[^>]*>([\s\S]*?)<\/li>/gi;
+  let match: RegExpExecArray | null;
+  while ((match = li.exec(ol[1])) !== null) {
+    const text = stripHtml(match[1]);
+    if (text) steps.push(text);
+  }
+  return steps;
+}
+
 export default async function BlogPost({
   params,
 }: {
@@ -115,9 +138,8 @@ export default async function BlogPost({
         datePublished: post.date,
         dateModified: post.date,
         author: {
-          "@type": "Organization",
-          name: "Codefeb",
-          url: "https://codefeb.com",
+          "@type": "Person",
+          name: post.author,
         },
         publisher: {
           "@type": "Organization",
@@ -167,6 +189,19 @@ export default async function BlogPost({
           "@type": "Answer",
           text: faq.answer,
         },
+      })),
+    });
+  }
+
+  const howToSteps = extractHowToSteps(post.content);
+  if (howToSteps.length > 1) {
+    (articleJsonLd["@graph"] as Record<string, unknown>[]).push({
+      "@type": "HowTo",
+      name: post.title,
+      step: howToSteps.map((text, i) => ({
+        "@type": "HowToStep",
+        position: i + 1,
+        text,
       })),
     });
   }
@@ -225,6 +260,8 @@ export default async function BlogPost({
           </h1>
 
           <div className="flex gap-4 text-sm text-warm-brown/50">
+            <span>By {post.author}</span>
+            <span>&middot;</span>
             <span>
               {new Date(post.date).toLocaleDateString("en-US", {
                 month: "long",

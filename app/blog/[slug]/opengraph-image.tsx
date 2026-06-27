@@ -129,7 +129,7 @@ export default async function Image({
               display: "flex",
             }}
           >
-            by Codefeb
+            by {post?.author ?? "Simranjeet Aulakh"}
           </div>
         </div>
       </div>
