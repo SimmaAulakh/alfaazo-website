@@ -7,6 +7,7 @@ import BlogSection from "@/components/BlogSection";
 import CTA from "@/components/CTA";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import { FAQ_ITEMS } from "@/lib/faqItems";
 
 export const metadata: Metadata = {
   title: {
@@ -59,8 +60,22 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ_ITEMS.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  };
+
   return (
     <div className="grain-overlay">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Nav />
       <Hero />
       <Features />
