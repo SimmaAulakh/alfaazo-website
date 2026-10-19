@@ -9,6 +9,11 @@ import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import { FAQ_ITEMS } from "@/lib/faqItems";
 
+// The journal section lists the latest posts, so the homepage must not be frozen
+// at build time (it was observed cached for 18 days). Publishing also triggers
+// on-demand revalidation via /api/revalidate; this is the time-based safety net.
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: {
     absolute: "Alfaazo — Best App to Learn Punjabi | Free on iOS & Android",

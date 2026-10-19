@@ -2,7 +2,10 @@ import type { MetadataRoute } from "next";
 import { getAllSlugs, getAllTags } from "@/lib/blog";
 import { AUTHORS } from "@/lib/authors";
 
-export const revalidate = 300;
+// Served fresh on every request. Traffic here is crawlers only, and the ISR copy
+// was observed staying stale for 14h+ (new posts never appeared until a redeploy),
+// which silently delays discovery of every new post. Dynamic is the bulletproof fix.
+export const dynamic = "force-dynamic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.alfaazo.com";
