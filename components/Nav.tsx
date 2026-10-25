@@ -36,7 +36,7 @@ function trackClick(label: string) {
   }
 }
 
-type Platform = "ios" | "android" | "other";
+type Platform = "ios" | "android" | "mac" | "other";
 
 function detectPlatform(): Platform {
   if (typeof navigator === "undefined") return "other";
@@ -48,6 +48,7 @@ function detectPlatform(): Platform {
     navigator.maxTouchPoints > 1;
   if (/iPhone|iPad|iPod/i.test(ua) || isIpadOs) return "ios";
   if (/Android/i.test(ua)) return "android";
+  if (/Macintosh/i.test(ua)) return "mac";
   return "other";
 }
 
@@ -81,8 +82,9 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
-  // Resolved after mount so server and client render the same markup.
-  const [platform, setPlatform] = useState<Platform>("other");
+  // Resolved after mount so server and client render the same markup;
+  // null until then.
+  const [platform, setPlatform] = useState<Platform | null>(null);
 
   useEffect(() => {
     setPlatform(detectPlatform());
@@ -144,21 +146,25 @@ export default function Nav() {
     return pathname === item.href || pathname.startsWith(item.href + "/");
   }
 
-  // "Get the App": on the homepage scroll to the store badges; on other pages
-  // send phones straight to their store and everyone else to the download section.
-  const appHref = isHomepage
-    ? "#download"
-    : platform === "ios"
-      ? APP_STORE_URL
-      : platform === "android"
-        ? PLAY_STORE_URL
-        : "/#download";
+  // "Get the App" goes straight to a store on every page (the hero's own
+  // badges already offer both): iPhones, iPads and Macs to the App Store,
+  // Android and other desktops to Google Play, which can install to a linked
+  // Android phone. Until the platform is known (before hydration) it falls
+  // back to the download section.
+  const appHref =
+    platform === null
+      ? isHomepage
+        ? "#download"
+        : "/#download"
+      : platform === "ios" || platform === "mac"
+        ? APP_STORE_URL
+        : PLAY_STORE_URL;
   const appIsExternal = appHref.startsWith("http");
   const appLinkProps = appIsExternal
     ? { target: "_blank", rel: "noopener noreferrer" }
     : {};
   const onAppClick = () => {
-    trackClick(`get_app_nav_${isHomepage ? "home" : platform}`);
+    trackClick(`get_app_nav_${platform ?? "unknown"}${isHomepage ? "_home" : ""}`);
     setMobileOpen(false);
   };
 
