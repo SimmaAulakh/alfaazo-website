@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
 import { getAllSlugs, getPostBySlug, getRecentPosts } from "@/lib/blog";
 import { getAuthorByName } from "@/lib/authors";
@@ -213,6 +215,7 @@ export default async function BlogPost({
 
   return (
     <div className="min-h-screen bg-cream">
+      <Nav />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -351,6 +354,7 @@ export default async function BlogPost({
           </Link>
         </div>
       </article>
+      <Footer />
     </div>
   );
 }

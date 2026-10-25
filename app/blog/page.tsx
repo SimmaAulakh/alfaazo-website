@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { getAllPosts } from "@/lib/blog";
 
 export const revalidate = 300; // revalidate every 5 minutes
@@ -30,6 +32,7 @@ export default async function BlogPage() {
 
   return (
     <div className="min-h-screen bg-cream">
+      <Nav />
       <div className="max-w-[1000px] mx-auto px-6 md:px-10 py-32">
         <div className="text-center mb-16">
           <h1 className="font-heading text-[clamp(2rem,4vw,3rem)] font-black text-primary-dark mb-4">
@@ -94,6 +97,7 @@ export default async function BlogPage() {
           </Link>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

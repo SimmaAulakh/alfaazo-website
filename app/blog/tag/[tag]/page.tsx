@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
 import { getPostsByTag, getAllTags } from "@/lib/blog";
 
@@ -78,6 +80,7 @@ export default async function TagPage({
 
   return (
     <div className="min-h-screen bg-cream">
+      <Nav />
       <div className="max-w-[1000px] mx-auto px-6 md:px-10 py-32">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-6">
@@ -188,6 +191,7 @@ export default async function TagPage({
           </Link>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
