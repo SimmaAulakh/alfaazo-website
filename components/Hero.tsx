@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 function trackClick(label: string) {
   if (typeof window !== "undefined" && typeof window.gtag === "function") {
     window.gtag("event", "click", {
@@ -8,6 +10,22 @@ function trackClick(label: string) {
     });
   }
 }
+
+// Framed app screenshots from the design kit (transparent corners, 640×1356 web copies).
+const SCREENS = {
+  home: {
+    src: "/screens/home.webp",
+    alt: "Alfaazo home screen: a five-day streak, 40 of 60 XP for the day, and the Your Journey lesson units with Alfie the mascot",
+  },
+  exercise: {
+    src: "/screens/exercise.webp",
+    alt: "Alfaazo lesson exercise asking which word means Hello, with Sat Sri Akaal in Gurmukhi marked correct",
+  },
+  alphabet: {
+    src: "/screens/alphabet.webp",
+    alt: "Alfaazo Punjabi alphabet screen showing the 35 Gurmukhi letters with their names and audio buttons",
+  },
+};
 
 export default function Hero() {
   return (
@@ -47,7 +65,7 @@ export default function Hero() {
       >ਸ</span>
 
       {/* Content */}
-      <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12 grid md:grid-cols-[1fr_auto] items-center gap-12">
+      <div className="w-full max-w-[1200px] mx-auto px-6 md:px-12 pt-28 pb-10 md:py-0 grid md:grid-cols-[1fr_auto] items-center gap-12">
         <div className="animate-fadeInUp">
           {/* Eyebrow */}
           <div className="flex items-center gap-3 mb-8">
@@ -110,15 +128,64 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right side — Gurmukhi script art element (visible on desktop) */}
-        <div className="hidden md:flex flex-col items-center gap-3 animate-fadeIn" style={{ animationDelay: "0.4s" }}>
-          <div className="relative">
-            <div className="w-[200px] h-[200px] rounded-3xl bg-gradient-to-br from-primary/8 to-primary/3 border border-primary/10 flex items-center justify-center backdrop-blur-sm">
-              <span className="font-urdu text-[6rem] text-primary/60 leading-none select-none">ਪ</span>
+        {/* Right side — app screenshots: home screen in front, exercise and alphabet behind */}
+        <div
+          role="group"
+          aria-label="Screenshots of the Alfaazo app"
+          className="relative mx-auto w-full max-w-[340px] md:max-w-none md:w-[220px] lg:w-[320px] xl:w-[460px] aspect-[9/10] animate-fadeIn"
+          style={{ animationDelay: "0.3s" }}
+        >
+          {/* Soft glow behind the phones */}
+          <div
+            className="absolute inset-x-[8%] top-[6%] bottom-[4%] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(103,58,183,0.16)_0%,transparent_68%)] blur-2xl"
+            aria-hidden="true"
+          />
+
+          {/* Left — exercise */}
+          <div className="absolute left-0 top-[11%] w-[39%] -rotate-6 origin-bottom">
+            <div className="animate-float" style={{ animationDuration: "9s", animationDelay: "0.8s" }}>
+              <Image
+                src={SCREENS.exercise.src}
+                alt={SCREENS.exercise.alt}
+                width={640}
+                height={1356}
+                sizes="(max-width: 767px) 133px, (max-width: 1023px) 86px, (max-width: 1279px) 125px, 180px"
+                className="w-full h-auto"
+                style={{ filter: "drop-shadow(0 22px 36px rgba(81,45,168,0.22))" }}
+              />
             </div>
-            <div className="absolute -bottom-3 -right-3 w-[200px] h-[200px] rounded-3xl border border-xp-gold/15 -z-10" />
           </div>
-          <span className="text-[0.7rem] text-warm-brown/40 tracking-[0.1em] uppercase mt-2">Punjabi</span>
+
+          {/* Right — alphabet */}
+          <div className="absolute right-0 top-[11%] w-[39%] rotate-6 origin-bottom">
+            <div className="animate-float" style={{ animationDuration: "11s", animationDelay: "1.6s" }}>
+              <Image
+                src={SCREENS.alphabet.src}
+                alt={SCREENS.alphabet.alt}
+                width={640}
+                height={1356}
+                sizes="(max-width: 767px) 133px, (max-width: 1023px) 86px, (max-width: 1279px) 125px, 180px"
+                className="w-full h-auto"
+                style={{ filter: "drop-shadow(0 22px 36px rgba(81,45,168,0.22))" }}
+              />
+            </div>
+          </div>
+
+          {/* Centre — home (the hero image) */}
+          <div className="absolute left-1/2 top-0 w-[49%] -translate-x-1/2">
+            <div className="animate-float" style={{ animationDuration: "10s" }}>
+              <Image
+                src={SCREENS.home.src}
+                alt={SCREENS.home.alt}
+                width={640}
+                height={1356}
+                priority
+                sizes="(max-width: 767px) 167px, (max-width: 1023px) 108px, (max-width: 1279px) 157px, 226px"
+                className="w-full h-auto"
+                style={{ filter: "drop-shadow(0 30px 56px rgba(81,45,168,0.32))" }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>
