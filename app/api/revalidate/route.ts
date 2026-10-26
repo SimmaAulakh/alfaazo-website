@@ -11,7 +11,7 @@ import type { NextRequest } from "next/server";
 // POST /api/revalidate  (header x-revalidate-secret: <REVALIDATE_SECRET>)
 // body: { "slugs": ["some-post-slug", ...] }   (optional — changed/added posts)
 
-const LIST_PATHS = ["/", "/blog", "/sitemap.xml"];
+const LIST_PATHS = ["/", "/blog", "/sitemap.xml", "/llms.txt", "/llms-full.txt"];
 
 function secretMatches(provided: string | null): boolean {
   const expected = process.env.REVALIDATE_SECRET;

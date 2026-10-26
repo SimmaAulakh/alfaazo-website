@@ -16,6 +16,8 @@ export interface BlogPost {
   excerpt: string;
   content: string;
   date: string;
+  /** ISO date of the last substantive revision; shown as "Updated" and used for dateModified. */
+  updated?: string;
   tag: string;
   readTime: string;
   author: string;

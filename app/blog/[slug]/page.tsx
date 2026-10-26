@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
 import { getAllSlugs, getPostBySlug, getRecentPosts } from "@/lib/blog";
 import { getAuthorByName } from "@/lib/authors";
+import { extractFaqs, stripHtml } from "@/lib/postContent";
 
 export const revalidate = 300;
 
@@ -43,7 +44,7 @@ export async function generateMetadata({
       description: post.excerpt,
       type: "article",
       publishedTime: post.date,
-      modifiedTime: post.date,
+      modifiedTime: post.updated ?? post.date,
       authors: [post.author],
       url: `https://www.alfaazo.com/blog/${slug}`,
       siteName: "Alfaazo",
@@ -58,41 +59,6 @@ export async function generateMetadata({
       canonical: `https://www.alfaazo.com/blog/${slug}`,
     },
   };
-}
-
-function stripHtml(html: string): string {
-  return html
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, " ")
-    .replace(/\s+/g, " ")
-    .replace(/ ([.,!?;:])/g, "$1")
-    .trim();
-}
-
-// Pulls FAQ question/answer pairs out of a post's HTML so they can be emitted as
-// FAQPage structured data. Expects the house convention:
-//   <h2>Frequently Asked Questions</h2> <h3>Question</h3> <p>Answer</p> ...
-// Posts without that section simply yield no pairs (and no FAQ schema).
-function extractFaqs(html: string): { question: string; answer: string }[] {
-  const section = html.match(
-    /<h2[^>]*>\s*Frequently Asked Questions\s*<\/h2>([\s\S]*?)(?=<h2[\s>]|$)/i
-  );
-  if (!section) return [];
-
-  const faqs: { question: string; answer: string }[] = [];
-  const pair = /<h3[^>]*>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h3[\s>]|$)/gi;
-  let match: RegExpExecArray | null;
-  while ((match = pair.exec(section[1])) !== null) {
-    const question = stripHtml(match[1]);
-    const answer = stripHtml(match[2]);
-    if (question && answer) faqs.push({ question, answer });
-  }
-  return faqs;
 }
 
 // Pulls ordered steps out of a "step-by-step" section so procedural posts can
@@ -140,7 +106,7 @@ export default async function BlogPost({
         description: post.excerpt,
         image: `https://www.alfaazo.com/blog/${slug}/opengraph-image`,
         datePublished: post.date,
-        dateModified: post.date,
+        dateModified: post.updated ?? post.date,
         author: {
           "@type": "Person",
           name: post.author,
@@ -291,6 +257,19 @@ export default async function BlogPost({
             </span>
             <span>&middot;</span>
             <span>{post.readTime} read</span>
+            {post.updated && post.updated > post.date && (
+              <>
+                <span>&middot;</span>
+                <span>
+                  Updated{" "}
+                  {new Date(post.updated).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
+                </span>
+              </>
+            )}
           </div>
         </div>
 
