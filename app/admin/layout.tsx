@@ -3,10 +3,12 @@
 import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAdminAuth, signOutAdmin } from "@/lib/admin-auth";
+import { AdminDataProvider } from "@/lib/admin/AdminData";
+import AdminShell from "@/components/admin/shell/AdminShell";
 
 function Centered({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-cream flex items-center justify-center p-6">
+    <div className="min-h-screen bg-adm-page font-sans flex items-center justify-center p-6">
       {children}
     </div>
   );
@@ -15,8 +17,8 @@ function Centered({ children }: { children: React.ReactNode }) {
 function Skeleton() {
   return (
     <Centered>
-      <div className="flex flex-col items-center gap-3 text-text-secondary">
-        <div className="h-8 w-8 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
+      <div className="flex flex-col items-center gap-3 text-adm-muted">
+        <div className="h-8 w-8 rounded-full border-2 border-adm-line border-t-adm-accent animate-spin" />
         <span className="text-sm">Loading…</span>
       </div>
     </Centered>
@@ -26,17 +28,17 @@ function Skeleton() {
 function AccessDenied({ email }: { email: string | null }) {
   return (
     <Centered>
-      <div className="max-w-sm text-center rounded-2xl bg-surface border border-primary/10 p-8 shadow-sm">
-        <h1 className="text-xl font-bold text-primary-dark mb-2">Access denied</h1>
-        <p className="text-sm text-text-secondary mb-1">
+      <div className="max-w-sm text-center rounded-xl bg-adm-surface border border-adm-line p-8 shadow-sm">
+        <h1 className="text-lg font-semibold text-adm-ink mb-2">Access denied</h1>
+        <p className="text-sm text-adm-muted mb-1">
           {email ? `Signed in as ${email}.` : "Signed in."}
         </p>
-        <p className="text-sm text-text-secondary mb-6">
+        <p className="text-sm text-adm-muted mb-6">
           This account is not authorised to view the admin dashboard.
         </p>
         <button
           onClick={() => signOutAdmin()}
-          className="rounded-full bg-primary text-white text-sm font-medium px-5 py-2.5 hover:bg-primary-dark transition-colors"
+          className="rounded-lg bg-adm-accent text-white text-sm font-medium px-5 py-2.5 hover:bg-adm-accent-deep transition-colors"
         >
           Sign out
         </button>
@@ -69,26 +71,10 @@ export default function AdminLayout({
   if (!isAdmin) return <AccessDenied email={user.email} />;
 
   return (
-    <div className="min-h-screen bg-cream">
-      <header className="border-b border-primary/10 bg-surface">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="font-heading text-lg font-bold text-primary-dark">
-            Alfaazo Admin
-          </span>
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-text-secondary hidden sm:inline">
-              {user.email}
-            </span>
-            <button
-              onClick={() => signOutAdmin()}
-              className="text-xs font-medium text-primary hover:text-primary-dark transition-colors"
-            >
-              Sign out
-            </button>
-          </div>
-        </div>
-      </header>
-      <main className="max-w-6xl mx-auto px-6 py-8">{children}</main>
-    </div>
+    <AdminDataProvider>
+      <AdminShell email={user.email} onSignOut={() => signOutAdmin()}>
+        {children}
+      </AdminShell>
+    </AdminDataProvider>
   );
 }

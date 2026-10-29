@@ -4,7 +4,6 @@
  */
 "use client";
 
-import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { plFunctions } from "./pl-firebase";
 
@@ -91,42 +90,4 @@ export async function getUsersCompletedAll(): Promise<CompletedAllResult> {
   );
   const res = await callable({});
   return res.data;
-}
-
-interface CompletedAllState {
-  data: CompletedAllResult | null;
-  loading: boolean;
-  error: string | null;
-}
-
-/** Fetches course-completion stats once on mount. */
-export function useCompletedAll(): CompletedAllState {
-  const [state, setState] = useState<CompletedAllState>({
-    data: null,
-    loading: true,
-    error: null,
-  });
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const data = await getUsersCompletedAll();
-        if (!cancelled) setState({ data, loading: false, error: null });
-      } catch (e) {
-        if (!cancelled) {
-          setState({
-            data: null,
-            loading: false,
-            error: e instanceof Error ? e.message : "Failed to load",
-          });
-        }
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return state;
 }

@@ -4,7 +4,6 @@
  */
 "use client";
 
-import { useEffect, useState } from "react";
 import { httpsCallable } from "firebase/functions";
 import { plFunctions } from "./pl-firebase";
 
@@ -34,45 +33,11 @@ export interface RetentionResult {
   cohorts: RetentionCohort[];
 }
 
-interface RetentionState {
-  data: RetentionResult | null;
-  loading: boolean;
-  error: string | null;
-}
-
-export function useRetention(): RetentionState {
-  const [state, setState] = useState<RetentionState>({
-    data: null,
-    loading: true,
-    error: null,
-  });
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const callable = httpsCallable<Record<string, never>, RetentionResult>(
-          plFunctions(),
-          "getRetention",
-        );
-        const res = await callable({});
-        if (!cancelled) {
-          setState({ data: res.data, loading: false, error: null });
-        }
-      } catch (e) {
-        if (!cancelled) {
-          setState({
-            data: null,
-            loading: false,
-            error: e instanceof Error ? e.message : "Failed to load retention",
-          });
-        }
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  return state;
+/** Live weekly-cohort retention from the admin-only getRetention callable. */
+export async function fetchRetention(): Promise<RetentionResult> {
+  const callable = httpsCallable<Record<string, never>, RetentionResult>(
+    plFunctions(),
+    "getRetention",
+  );
+  return (await callable({})).data;
 }

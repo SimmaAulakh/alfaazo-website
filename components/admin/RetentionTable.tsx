@@ -1,132 +1,99 @@
 "use client";
 
-import type { RetentionResult } from "@/lib/retention";
+import type { RetentionCohort, RetentionResult } from "@/lib/retention";
 
-interface RetentionTableProps {
-  data: RetentionResult | null;
-  loading: boolean;
-  error: string | null;
-  /** When set, cohort rows are clickable (to drill into churned users). */
-  onCohortClick?: (weekStart: string, size: number) => void;
+/** Dataviz sequential blue, light → dark (steps 100…600). */
+const RAMP = ["#cde2fb", "#b7d3f6", "#9ec5f4", "#86b6ef", "#6da7ec", "#5598e7", "#3987e5", "#2a78d6", "#256abf", "#1c5cab", "#184f95"];
+/** Retention at or above this fills the darkest step. */
+const CAP = 60;
+
+function stepFor(pct: number): number {
+  return Math.min(RAMP.length - 1, Math.round((Math.min(pct, CAP) / CAP) * (RAMP.length - 1)));
 }
 
-/** Format "YYYY-MM-DD" → "Apr 7". */
+const MILESTONES = ["d1", "d3", "d7", "d14", "d30"] as const;
+type Milestone = (typeof MILESTONES)[number];
+
 function fmtWeek(iso: string): string {
-  const [y, m, d] = iso.split("-").map(Number);
-  const date = new Date(Date.UTC(y, m - 1, d));
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
 }
 
-/** Green cell whose intensity scales with the retention %. */
-function cellStyle(pct: number | null): React.CSSProperties {
-  if (pct == null) return {};
-  const alpha = Math.min(0.32, (pct / 100) * 0.32 + 0.04);
-  return { backgroundColor: `rgba(76, 175, 80, ${alpha})` };
-}
-
-function Cell({ pct, n }: { pct: number | null; n: number }) {
+function HeatCell({ pct, n }: { pct: number | null; n: number }) {
+  if (pct == null) {
+    return (
+      <td className="px-1 py-1" title="Not enough time has passed yet">
+        <div className="h-9 rounded-md bg-adm-page grid place-items-center text-xs text-adm-muted">—</div>
+      </td>
+    );
+  }
+  const step = stepFor(pct);
   return (
-    <td
-      className="px-3 py-2 text-center text-xs tabular-nums"
-      style={cellStyle(pct)}
-      title={n > 0 ? `${n} mature user${n === 1 ? "" : "s"}` : "Not enough time elapsed yet"}
-    >
-      {pct == null ? (
-        <span className="text-text-secondary">—</span>
-      ) : (
-        <span className="font-semibold text-primary-dark">{pct}%</span>
-      )}
+    <td className="px-1 py-1" title={`${pct}% of ${n} user${n === 1 ? "" : "s"} old enough`}>
+      <div
+        className="h-9 rounded-md grid place-items-center text-xs font-semibold tabular-nums"
+        style={{ backgroundColor: RAMP[step], color: step >= 7 ? "#ffffff" : "#0b0b0b" }}
+      >
+        {pct}%
+      </div>
     </td>
   );
 }
 
 export default function RetentionTable({
   data,
-  loading,
-  error,
   onCohortClick,
-}: RetentionTableProps) {
-  const clickable = Boolean(onCohortClick);
-  return (
-    <div className="rounded-2xl bg-surface border border-primary/10 p-5 shadow-sm">
-      <h3 className="text-sm font-semibold text-primary-dark mb-1">
-        Retention by signup week
-      </h3>
-      <p className="text-xs text-text-secondary mb-4">
-        % of each weekly cohort active 1 / 3 / 7 / 14 / 30 days after signing up.
-        “—” means not enough time has passed yet.
-        {clickable ? " Click a cohort row to list users who never returned." : ""}
-      </p>
+}: {
+  data: RetentionResult;
+  onCohortClick?: (weekStart: string, size: number) => void;
+}) {
+  const row = (label: React.ReactNode, size: number, m: Pick<RetentionCohort, `${Milestone}` | `${Milestone}n`>, key: string, onClick?: () => void, strong?: boolean) => (
+    <tr
+      key={key}
+      onClick={onClick}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onClick()) : undefined}
+      className={onClick ? "cursor-pointer hover:bg-adm-hover focus-visible:outline-2 focus-visible:outline-adm-accent" : ""}
+    >
+      <th scope="row" className={`px-3 py-1 text-left text-sm whitespace-nowrap ${strong ? "font-semibold text-adm-ink" : "font-normal text-adm-ink-2"}`}>
+        {label}
+      </th>
+      <td className="px-3 py-1 text-right text-sm tabular-nums text-adm-ink-2">{size.toLocaleString("en-US")}</td>
+      {MILESTONES.map((k) => (
+        <HeatCell key={k} pct={m[k]} n={m[`${k}n`]} />
+      ))}
+    </tr>
+  );
 
-      {loading ? (
-        <div className="flex items-center gap-3 text-text-secondary text-sm py-6 justify-center">
-          <div className="h-5 w-5 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
-          Computing cohorts…
-        </div>
-      ) : error ? (
-        <p className="text-sm text-streak-orange py-4">{error}</p>
-      ) : !data || data.cohorts.length === 0 ? (
-        <p className="text-sm text-text-secondary py-4">No cohort data yet.</p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm border-collapse">
-            <thead>
-              <tr className="text-text-secondary">
-                <th className="px-3 py-2 text-left font-medium">Cohort</th>
-                <th className="px-3 py-2 text-right font-medium">Users</th>
-                <th className="px-3 py-2 text-center font-medium">D1</th>
-                <th className="px-3 py-2 text-center font-medium">D3</th>
-                <th className="px-3 py-2 text-center font-medium">D7</th>
-                <th className="px-3 py-2 text-center font-medium">D14</th>
-                <th className="px-3 py-2 text-center font-medium">D30</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Pooled headline row */}
-              <tr className="border-y border-primary/10 bg-primary/[0.03] font-medium">
-                <td className="px-3 py-2 text-left text-primary-dark">All users</td>
-                <td className="px-3 py-2 text-right tabular-nums text-warm-brown">
-                  {data.totalUsers}
-                </td>
-                <Cell pct={data.overall.d1} n={data.overall.d1n} />
-                <Cell pct={data.overall.d3} n={data.overall.d3n} />
-                <Cell pct={data.overall.d7} n={data.overall.d7n} />
-                <Cell pct={data.overall.d14} n={data.overall.d14n} />
-                <Cell pct={data.overall.d30} n={data.overall.d30n} />
-              </tr>
-              {data.cohorts.map((c) => (
-                <tr
-                  key={c.weekStart}
-                  onClick={
-                    onCohortClick
-                      ? () => onCohortClick(c.weekStart, c.size)
-                      : undefined
-                  }
-                  className={`border-b border-primary/5${
-                    clickable ? " cursor-pointer hover:bg-primary/[0.04]" : ""
-                  }`}
-                >
-                  <td className="px-3 py-2 text-left text-warm-brown">
-                    {fmtWeek(c.weekStart)}
-                  </td>
-                  <td className="px-3 py-2 text-right tabular-nums text-warm-brown">
-                    {c.size}
-                  </td>
-                  <Cell pct={c.d1} n={c.d1n} />
-                  <Cell pct={c.d3} n={c.d3n} />
-                  <Cell pct={c.d7} n={c.d7n} />
-                  <Cell pct={c.d14} n={c.d14n} />
-                  <Cell pct={c.d30} n={c.d30n} />
-                </tr>
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[560px] border-collapse">
+          <thead>
+            <tr className="text-xs text-adm-ink-2">
+              <th scope="col" className="px-3 py-2 text-left font-medium">Signup week</th>
+              <th scope="col" className="px-3 py-2 text-right font-medium">Users</th>
+              {["Day 1", "Day 3", "Day 7", "Day 14", "Day 30"].map((h) => (
+                <th key={h} scope="col" className="px-1 py-2 text-center font-medium">{h}</th>
               ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+            </tr>
+          </thead>
+          <tbody>
+            {row("All users", data.totalUsers, data.overall, "all", undefined, true)}
+            {data.cohorts.map((c) =>
+              row(fmtWeek(c.weekStart), c.size, c, c.weekStart, onCohortClick ? () => onCohortClick(c.weekStart, c.size) : undefined),
+            )}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex items-center gap-2 text-[11px] text-adm-muted" aria-hidden="true">
+        <span>0%</span>
+        <span className="flex h-2 w-40 rounded-full overflow-hidden">
+          {RAMP.map((c) => (
+            <span key={c} className="flex-1" style={{ backgroundColor: c }} />
+          ))}
+        </span>
+        <span>{CAP}%+</span>
+      </div>
     </div>
   );
 }

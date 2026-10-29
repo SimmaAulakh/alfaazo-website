@@ -1,370 +1,126 @@
 "use client";
 
-import { useState } from "react";
-import {
-  useAggregates,
-  latest,
-  compact,
-  AGE_RANGE_ORDER,
-} from "@/lib/aggregates";
-import { useRetention } from "@/lib/retention";
-import {
-  getUsersByStreak,
-  getPaidUsers,
-  getCohortChurnedUsers,
-  useCompletedAll,
-  type AdminUser,
-} from "@/lib/admin-users";
-import Scorecard from "@/components/admin/Scorecard";
-import TrendLineChart from "@/components/admin/TrendLineChart";
-import DistributionBar from "@/components/admin/DistributionBar";
-import LessonFunnel from "@/components/admin/LessonFunnel";
-import RetentionTable from "@/components/admin/RetentionTable";
-import UserListModal from "@/components/admin/UserListModal";
+import { useAdminData } from "@/lib/admin/AdminData";
+import { flow, snapshot } from "@/lib/admin/kpis";
+import { fmtCompact, fmtDay, fmtInt, fmtPct } from "@/lib/admin/metrics";
+import { getPaidUsers } from "@/lib/admin-users";
+import PageStatus from "@/components/admin/ui/PageStatus";
+import StatTile from "@/components/admin/ui/StatTile";
+import ChartCard from "@/components/admin/ui/ChartCard";
+import SummaryCard from "@/components/admin/ui/SummaryCard";
+import { BarsChart, TrendChart } from "@/components/admin/ui/Charts";
+import { useUserDrill } from "@/components/admin/useUserDrill";
 
-// Short x-axis labels so all nine age buckets fit without Recharts hiding any.
-const AGE_SHORT_LABEL: Record<string, string> = {
-  "Over 65": "65+",
-  "Prefer not to say": "Declined",
-  "Not set": "Skipped",
-};
-
-interface UserDrill {
-  title: string;
-  loading: boolean;
-  error: string | null;
-  users: AdminUser[];
-  truncated: boolean;
+function pct(v: number | null | undefined) {
+  return v == null ? "—" : fmtPct(v);
 }
 
-export default function AdminDashboardPage() {
-  const { data, loading, error } = useAggregates(30);
-  const retention = useRetention();
-  const completedAll = useCompletedAll();
-  const newest = latest(data);
-  const [drill, setDrill] = useState<UserDrill | null>(null);
+function Overview() {
+  const { windows: w, range, latest, retention, completion, refreshing } = useAdminData();
+  const drill = useUserDrill();
+  if (!latest) return null;
 
-  // Runs an async user-list fetch behind a shared modal (loading → result).
-  async function runDrill(
-    title: string,
-    fetcher: () => Promise<{ users: AdminUser[]; truncated: boolean }>,
-  ) {
-    setDrill({ title, loading: true, error: null, users: [], truncated: false });
-    try {
-      const res = await fetcher();
-      setDrill({
-        title,
-        loading: false,
-        error: null,
-        users: res.users,
-        truncated: res.truncated,
-      });
-    } catch (e) {
-      setDrill({
-        title,
-        loading: false,
-        error: e instanceof Error ? e.message : "Failed to load users",
-        users: [],
-        truncated: false,
-      });
-    }
-  }
+  const total = snapshot(w, range, latest, (r) => r.totalUsers);
+  const signups = flow(w, range, (r) => r.newUsers);
+  const dau = flow(w, range, (r) => r.dau, "avg");
+  const onboarding = snapshot(w, range, latest, (r) => r.onboardingCompletePct, "pts");
+  const paid = snapshot(w, range, latest, (r) => r.paidUsers ?? 0);
+  const xp = flow(w, range, (r) => r.totalXpEarnedYesterday);
 
-  function openStreakUsers(label: string, value: number) {
-    if (value <= 0) return; // empty bucket — nothing to show
-    const streak = label.endsWith("+") ? 90 : Number(label);
-    runDrill(`Users on a ${label}-day streak`, () => getUsersByStreak(streak));
-  }
-
-  function openPaidUsers() {
-    runDrill("Paid users", () => getPaidUsers());
-  }
-
-  function openCompletedAll() {
-    const d = completedAll.data;
-    if (!d) return;
-    setDrill({
-      title: `Finished all ${d.totalLessons} lessons`,
-      loading: false,
-      error: null,
-      users: d.users,
-      truncated: d.truncated,
-    });
-  }
-
-  function openCohortChurned(weekStart: string, size: number) {
-    const label = new Date(`${weekStart}T00:00:00Z`).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      timeZone: "UTC",
-    });
-    runDrill(`Churned — week of ${label} (${size} signups)`, () =>
-      getCohortChurnedUsers(weekStart),
-    );
-  }
-
-  if (loading) {
-    return <p className="text-sm text-text-secondary">Loading metrics…</p>;
-  }
-  if (error) {
-    return (
-      <div className="rounded-2xl bg-surface border border-streak-orange/30 p-6">
-        <p className="text-sm font-semibold text-streak-orange mb-1">
-          Couldn’t load analytics
-        </p>
-        <p className="text-xs text-text-secondary break-words">{error}</p>
-        <p className="text-xs text-text-secondary mt-3">
-          Check that the punjabilingo-d02cc web config and admin uid env vars are
-          set, and that the admin_aggregates Firestore rule allows your uid.
-        </p>
-      </div>
-    );
-  }
-  if (!newest) {
-    return (
-      <p className="text-sm text-text-secondary">
-        No aggregates yet. Run the backfill function or wait for tonight’s
-        scheduled run.
-      </p>
-    );
-  }
-
-  const trend = data.map((d) => ({
-    date: d.date,
-    DAU: d.dau,
-    Signups: d.newUsers,
-    "Onboarding %": d.onboardingCompletePct,
-  }));
-
-  // Per-value streak histogram (0, 1, 2, …). Auto-sizes to the max streak
-  // present, fills gaps with 0, and appends the "90+" overflow bucket if any.
-  const sh = newest.streakHistogram ?? {};
-  const overflowKey = Object.keys(sh).find((k) => k.endsWith("+"));
-  const numericKeys = Object.keys(sh)
-    .filter((k) => !k.endsWith("+"))
-    .map(Number)
-    .filter((n) => Number.isFinite(n));
-  const maxStreak = numericKeys.length ? Math.max(...numericKeys) : 0;
-  const streakData: Array<{ label: string; value: number }> = Array.from(
-    { length: maxStreak + 1 },
-    (_, i) => ({ label: String(i), value: sh[String(i)] ?? 0 }),
-  );
-  if (overflowKey && (sh[overflowKey] ?? 0) > 0) {
-    streakData.push({ label: overflowKey, value: sh[overflowKey] });
-  }
-
-  const levelData = Array.from({ length: 8 }, (_, i) => {
-    const lvl = String(i + 1);
-    return { label: `L${lvl}`, value: newest.levelDistribution[lvl] ?? 0 };
-  });
-
-  // Age ranges in onboarding order; any unexpected value the backend saw is
-  // appended rather than dropped.
-  const ageDist = newest.ageDistribution;
-  const ageData = ageDist
-    ? [
-        ...AGE_RANGE_ORDER,
-        ...Object.keys(ageDist).filter((k) => !AGE_RANGE_ORDER.includes(k)),
-      ].map((key) => ({
-        label: AGE_SHORT_LABEL[key] ?? key,
-        value: ageDist[key] ?? 0,
-      }))
-    : [];
-  const ageAnswered = ageDist
-    ? Object.entries(ageDist)
-        .filter(([k]) => k !== "Not set" && k !== "Prefer not to say")
-        .reduce((n, [, v]) => n + v, 0)
-    : 0;
-
-  const sparkDau = data.map((d) => d.dau);
-  const sparkSignups = data.map((d) => d.newUsers);
-  const sparkXp = data.map((d) => d.totalXpEarnedYesterday);
-  const sparkPaid = data.map((d) => d.paidUsers ?? 0);
+  const dauSeries = w.current.map((r) => ({ date: r.date, value: r.dau }));
+  const signupBars = w.current.map((r) => ({ label: r.date, value: r.newUsers }));
+  const o = retention.data?.overall;
+  const c = completion.data;
 
   return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="font-heading text-2xl font-bold text-primary-dark">
-          Dashboard
-        </h1>
-        <p className="text-xs text-text-secondary mt-1">
-          Latest data: {newest.date} · UTC reporting day · {data.length}-day
-          window
-        </p>
-      </div>
-
-      {/* Scorecards */}
-      <section className="grid grid-cols-2 lg:grid-cols-6 gap-4">
-        <Scorecard label="Total users" value={compact(newest.totalUsers)} />
-        <Scorecard
-          label="New signups"
-          value={newest.newUsers}
-          sparkline={sparkSignups}
-          accent="var(--color-secondary)"
-          hint="yesterday"
-        />
-        <Scorecard
-          label="DAU"
-          value={newest.dau}
-          sparkline={sparkDau}
-          accent="var(--color-primary)"
-          hint="yesterday"
-        />
-        <Scorecard
-          label="Onboarding"
-          value={`${newest.onboardingCompletePct}%`}
-          hint={`${newest.onboardingCompleteCount} complete`}
-        />
-        <Scorecard
-          label="XP earned"
-          value={compact(newest.totalXpEarnedYesterday)}
-          sparkline={sparkXp}
-          accent="var(--color-xp-gold)"
-          hint="yesterday"
-        />
-        <Scorecard
+    <div className="flex flex-col gap-6">
+      <section className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
+        <StatTile label="Total users" value={fmtCompact(total.value)} delta={total.delta} trend={total.trend} />
+        <StatTile label="New sign-ups" value={fmtCompact(signups.value)} delta={signups.delta} trend={signups.trend} />
+        <StatTile label="Avg daily active" value={fmtCompact(dau.value)} delta={dau.delta} trend={dau.trend} />
+        <StatTile label="Onboarded" value={fmtPct(onboarding.value)} delta={onboarding.delta} hint={`${fmtInt(latest.onboardingCompleteCount)} users`} />
+        <StatTile
           label="Paid users"
-          value={compact(newest.paidUsers ?? 0)}
-          sparkline={sparkPaid}
-          accent="var(--color-secondary)"
-          hint="click for list"
-          onClick={openPaidUsers}
+          value={fmtCompact(paid.value)}
+          delta={paid.delta}
+          trend={paid.trend}
+          onClick={() => drill.open("Paid users", getPaidUsers)}
         />
+        <StatTile label="XP earned" value={fmtCompact(xp.value)} delta={xp.delta} trend={xp.trend} />
       </section>
 
-      {/* Trends */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <TrendLineChart
-          title="DAU & new signups (30 days)"
-          data={trend}
-          series={[
-            { key: "DAU", label: "DAU", color: "var(--color-primary)" },
-            { key: "Signups", label: "New signups", color: "var(--color-secondary)" },
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <ChartCard
+          className="lg:col-span-2"
+          title="Daily active users"
+          description="Learners who completed a lesson or exercise each day."
+          dimmed={refreshing}
+          csvName={`alfaazo-dau-${range}d`}
+          table={{
+            columns: [
+              { key: "date", label: "Date", format: (v) => fmtDay(String(v)) },
+              { key: "value", label: "Active users", align: "right", format: (v) => fmtInt(Number(v)) },
+            ],
+            rows: dauSeries,
+          }}
+        >
+          <TrendChart data={dauSeries} seriesLabel="active users" format={fmtInt} />
+        </ChartCard>
+        <SummaryCard
+          title="Retention"
+          href="/admin/retention"
+          linkLabel="Cohorts"
+          rows={[
+            { label: "Day 1", value: pct(o?.d1), sub: o ? `${fmtInt(o.d1n)} users old enough` : undefined },
+            { label: "Day 7", value: pct(o?.d7), sub: o ? `${fmtInt(o.d7n)} users old enough` : undefined },
+            { label: "Day 30", value: pct(o?.d30), sub: o ? `${fmtInt(o.d30n)} users old enough` : undefined },
           ]}
-        />
-        <TrendLineChart
-          title="Onboarding completion % (30 days)"
-          data={trend}
-          series={[
-            {
-              key: "Onboarding %",
-              label: "Onboarding %",
-              color: "var(--color-soft-gold)",
-            },
-          ]}
-        />
-      </section>
-
-      {/* Retention cohorts */}
-      <section>
-        <RetentionTable
-          data={retention.data}
-          loading={retention.loading}
-          error={retention.error}
-          onCohortClick={openCohortChurned}
-        />
-      </section>
-
-      {/* Streak histogram — full width; click a bar to see those users */}
-      <section>
-        <DistributionBar
-          title={`Streak distribution (per day) · ${newest.avgStreak} avg · click a bar for users`}
-          data={streakData}
-          color="var(--color-streak-orange)"
-          onBarClick={openStreakUsers}
-        />
-      </section>
-
-      {/* Level distribution */}
-      <section>
-        <DistributionBar
-          title="Level distribution"
-          data={levelData}
-          color="var(--color-primary)"
-        />
-      </section>
-
-      {/* Age ranges (from onboarding) */}
-      <section>
-        {ageDist ? (
-          <DistributionBar
-            title={`Users by age range · ${ageAnswered} of ${newest.totalUsers} gave an age · Declined = “prefer not to say”, Skipped = never answered`}
-            data={ageData}
-            color="var(--color-secondary)"
-          />
-        ) : (
-          <div className="rounded-2xl bg-surface border border-primary/10 p-5 shadow-sm">
-            <h3 className="text-sm font-semibold text-primary-dark mb-1">
-              Users by age range
-            </h3>
-            <p className="text-sm text-text-secondary">
-              No age data in the {newest.date} snapshot yet. It appears after the
-              updated aggregateDailyMetrics function has run once.
-            </p>
-          </div>
-        )}
-      </section>
-
-      {/* Course completion — content-exhaustion signal */}
-      <section className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <Scorecard
-          label="Finished all lessons"
-          value={completedAll.loading ? "…" : completedAll.data?.completedAllCount ?? 0}
-          accent="var(--color-secondary)"
-          hint={
-            completedAll.data ? `of ${completedAll.data.totalLessons} · click for list` : undefined
-          }
-          onClick={completedAll.data ? openCompletedAll : undefined}
-        />
-        <Scorecard
-          label="Near finishing"
-          value={completedAll.loading ? "…" : completedAll.data?.nearDoneCount ?? 0}
-          hint={
-            completedAll.data
-              ? `within 5 of all ${completedAll.data.totalLessons}`
-              : undefined
+          note={
+            retention.error
+              ? `Couldn’t load retention: ${retention.error}`
+              : "Share of all users active again that many days after signing up."
           }
         />
-        <Scorecard
-          label="Total lessons"
-          value={completedAll.data?.totalLessons ?? "—"}
-          hint="in the course"
+      </section>
+
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <ChartCard
+          className="lg:col-span-2"
+          title="New sign-ups"
+          description="Accounts created per day."
+          dimmed={refreshing}
+          csvName={`alfaazo-signups-${range}d`}
+          table={{
+            columns: [
+              { key: "label", label: "Date", format: (v) => fmtDay(String(v)) },
+              { key: "value", label: "Sign-ups", align: "right", format: (v) => fmtInt(Number(v)) },
+            ],
+            rows: signupBars,
+          }}
+        >
+          <BarsChart data={signupBars} seriesLabel="sign-ups" labelFormat={fmtDay} format={fmtInt} minTickGap={24} />
+        </ChartCard>
+        <SummaryCard
+          title="Course progress"
+          href="/admin/learning"
+          linkLabel="Lessons"
+          rows={[
+            { label: "Lessons in the course", value: c ? fmtInt(c.totalLessons) : "—" },
+            { label: "Finished every lesson", value: c ? fmtInt(c.completedAllCount) : "—" },
+            { label: "Within 5 of finishing", value: c ? fmtInt(c.nearDoneCount) : "—" },
+          ]}
+          note={completion.error ? `Couldn’t load course progress: ${completion.error}` : undefined}
         />
       </section>
-
-      <section>
-        <LessonFunnel completion={newest.lessonCompletion} />
-      </section>
-
-      {/* Avg streak + language background as a small strip */}
-      <section className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-        <Scorecard label="Avg streak" value={newest.avgStreak} hint="days" />
-        <Scorecard label="Beginner" value={newest.languageBackground.beginner} />
-        <Scorecard label="Basic" value={newest.languageBackground.basic} />
-        <Scorecard
-          label="Intermediate"
-          value={newest.languageBackground.intermediate}
-        />
-        <Scorecard label="Advanced" value={newest.languageBackground.advanced} />
-      </section>
-
-      <p className="text-xs text-text-secondary border-t border-primary/10 pt-4">
-        <strong>Data quality:</strong> DAU, new signups, and XP earned are
-        time-windowed and historically accurate. Snapshot metrics (totals, paid
-        users, onboarding %, streak / level / language / age distributions, lesson
-        completion) reflect the state at the time each day was computed;
-        backfilled past days show today’s state for those fields.
-      </p>
-
-      <UserListModal
-        open={drill !== null}
-        title={drill?.title ?? ""}
-        loading={drill?.loading ?? false}
-        error={drill?.error ?? null}
-        users={drill?.users ?? []}
-        truncated={drill?.truncated}
-        onClose={() => setDrill(null)}
-      />
+      {drill.modal}
     </div>
+  );
+}
+
+export default function AdminOverviewPage() {
+  return (
+    <PageStatus>
+      <Overview />
+    </PageStatus>
   );
 }

@@ -21,6 +21,25 @@
   --font-sans: var(--font-dm-sans);
   --font-heading: var(--font-playfair-display);
   --font-urdu: var(--font-noto-nastaliq-urdu);
+
+  /* Admin console (/admin). Neutral chrome + the app's brand purple for
+     navigation and controls; data marks use the validated dataviz blue. */
+  --color-adm-page: #F7F7F9;
+  --color-adm-surface: #FFFFFF;
+  --color-adm-ink: #17141F;
+  --color-adm-ink-2: #55516A;
+  --color-adm-muted: #8A869A;
+  --color-adm-line: #E8E6EE;
+  --color-adm-hover: #F3F2F7;
+  --color-adm-accent: #7C4DD6;
+  --color-adm-accent-deep: #5B2EB0;
+  --color-adm-accent-wash: #F2ECFD;
+  --color-viz-1: #2a78d6;
+  --color-viz-gray: #c3c2b7;
+  --color-viz-grid: #e1e0d9;
+  --color-viz-axis: #c3c2b7;
+  --color-delta-up: #006300;
+  --color-delta-down: #d03b3b;
 }
 
 html {
