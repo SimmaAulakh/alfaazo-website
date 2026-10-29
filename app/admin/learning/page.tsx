@@ -8,6 +8,7 @@ import StatTile from "@/components/admin/ui/StatTile";
 import ChartCard from "@/components/admin/ui/ChartCard";
 import Icon from "@/components/admin/ui/Icon";
 import { LESSON_CATALOG } from "@/lib/admin/lessonCatalog";
+import { SectionProgress, UnitProgress } from "@/components/admin/learning/CourseProgress";
 import { useUserDrill } from "@/components/admin/useUserDrill";
 
 type Sort = "course" | "most" | "least";
@@ -82,6 +83,9 @@ function Learning() {
         <StatTile label="Within 5 of finishing" value={c ? fmtInt(c.nearDoneCount) : "—"} hint={c ? `missing 5 or fewer of ${c.totalLessons}` : undefined} />
         <StatTile label="Average lesson completion" value={fmtPct(mean)} hint="share of users, averaged across lessons" />
       </section>
+
+      <SectionProgress latest={latest} />
+      <UnitProgress latest={latest} dimmed={refreshing} />
 
       <ChartCard
         title="Completion by lesson"

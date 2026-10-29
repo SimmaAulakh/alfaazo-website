@@ -83,7 +83,7 @@ export default function StatTile({
   const body = (
     <>
       <div className="flex items-start justify-between gap-2">
-        <span className="text-[13px] font-medium text-adm-ink-2 truncate" title={label}>{label}</span>
+        <span className="text-[13px] font-medium text-adm-ink-2 line-clamp-2" title={label}>{label}</span>
         {onClick && (
           <span className="text-[11px] font-medium text-adm-accent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
             {actionLabel ?? "View users"}

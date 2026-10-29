@@ -146,6 +146,10 @@ interface BarsChartProps {
   format?: (v: number) => string;
   /** Format for the x-axis/tooltip label (dates use fmtDay). */
   labelFormat?: (l: string) => string;
+  /** Longer label for the tooltip only (defaults to labelFormat). */
+  tooltipLabel?: (l: string) => string;
+  /** Values are percentages: % ticks on rounded steps. */
+  percent?: boolean;
   height?: number;
   onBarClick?: (d: BarDatum) => void;
   minTickGap?: number;
@@ -156,11 +160,14 @@ export function BarsChart({
   seriesLabel,
   format = (v) => fmtCompact(v),
   labelFormat,
+  tooltipLabel,
+  percent,
   height = 240,
   onBarClick,
   minTickGap = 4,
 }: BarsChartProps) {
   if (data.length === 0) return <Empty height={height} />;
+  const pctTicks = percent ? niceTicks(Math.max(...data.map((d) => d.value))) : undefined;
   return (
     <div style={{ height }} className={onBarClick ? "cursor-pointer" : ""}>
       <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 320, height }}>
@@ -177,15 +184,19 @@ export function BarsChart({
           />
           <YAxis
             tick={AXIS_TICK}
-            tickFormatter={(v: number) => fmtCompact(v)}
+            tickFormatter={(v: number) => (percent ? pctTick(v) : fmtCompact(v))}
             tickLine={false}
             axisLine={false}
             width={44}
-            allowDecimals={false}
+            allowDecimals={Boolean(percent)}
+            domain={pctTicks ? [0, pctTicks[pctTicks.length - 1]] : undefined}
+            ticks={pctTicks}
           />
           <Tooltip
             cursor={{ fill: "var(--color-adm-hover)" }}
-            content={<Tip seriesLabel={seriesLabel} format={format} labelFormat={labelFormat} />}
+            content={
+              <Tip seriesLabel={seriesLabel} format={format} labelFormat={tooltipLabel ?? labelFormat} />
+            }
           />
           <Bar
             dataKey="value"

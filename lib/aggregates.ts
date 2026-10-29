@@ -65,6 +65,16 @@ export interface DailyAggregate {
   languageBackground: LanguageBackground;
   /** Added Oct 2026 — absent on rows computed before the backend deploy. */
   ageDistribution?: AgeDistribution;
+  /** Users who started / finished each unit (keyed "unit_N"). Added Oct 2026. */
+  unitCompletion?: Record<string, ProgressCount>;
+  /** Users who started / finished each section (keyed "1", "2"…). Added Oct 2026. */
+  sectionCompletion?: Record<string, ProgressCount>;
+}
+
+/** started = completed ≥1 lesson in it; completed = completed all of its lessons. */
+export interface ProgressCount {
+  started: number;
+  completed: number;
 }
 
 const COLLECTION = "admin_aggregates";
