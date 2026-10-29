@@ -31,6 +31,24 @@ export interface LanguageBackground {
 
 export type LessonCompletion = Record<string, number>; // lessonId -> pct
 
+// Users per onboarding age range (profile.ageRange) -> count. Keys are the
+// app's choices ("Under 18", "18-25", … "Over 65", "Prefer not to say") plus
+// "Not set" for users who skipped the step.
+export type AgeDistribution = Record<string, number>;
+
+/** Display order for the age chart — mirrors the app's onboarding choices. */
+export const AGE_RANGE_ORDER = [
+  "Under 18",
+  "18-25",
+  "26-35",
+  "36-45",
+  "46-55",
+  "56-65",
+  "Over 65",
+  "Prefer not to say",
+  "Not set",
+];
+
 export interface DailyAggregate {
   date: string;
   totalUsers: number;
@@ -46,6 +64,8 @@ export interface DailyAggregate {
   lessonCompletion: LessonCompletion;
   totalXpEarnedYesterday: number;
   languageBackground: LanguageBackground;
+  /** Added Oct 2026 — absent on rows computed before the backend deploy. */
+  ageDistribution?: AgeDistribution;
 }
 
 interface AggregatesState {

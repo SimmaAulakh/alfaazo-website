@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useAggregates, latest, compact } from "@/lib/aggregates";
+import {
+  useAggregates,
+  latest,
+  compact,
+  AGE_RANGE_ORDER,
+} from "@/lib/aggregates";
 import { useRetention } from "@/lib/retention";
 import {
   getUsersByStreak,
@@ -16,6 +21,13 @@ import DistributionBar from "@/components/admin/DistributionBar";
 import LessonFunnel from "@/components/admin/LessonFunnel";
 import RetentionTable from "@/components/admin/RetentionTable";
 import UserListModal from "@/components/admin/UserListModal";
+
+// Short x-axis labels so all nine age buckets fit without Recharts hiding any.
+const AGE_SHORT_LABEL: Record<string, string> = {
+  "Over 65": "65+",
+  "Prefer not to say": "Declined",
+  "Not set": "Skipped",
+};
 
 interface UserDrill {
   title: string;
@@ -146,6 +158,24 @@ export default function AdminDashboardPage() {
     return { label: `L${lvl}`, value: newest.levelDistribution[lvl] ?? 0 };
   });
 
+  // Age ranges in onboarding order; any unexpected value the backend saw is
+  // appended rather than dropped.
+  const ageDist = newest.ageDistribution;
+  const ageData = ageDist
+    ? [
+        ...AGE_RANGE_ORDER,
+        ...Object.keys(ageDist).filter((k) => !AGE_RANGE_ORDER.includes(k)),
+      ].map((key) => ({
+        label: AGE_SHORT_LABEL[key] ?? key,
+        value: ageDist[key] ?? 0,
+      }))
+    : [];
+  const ageAnswered = ageDist
+    ? Object.entries(ageDist)
+        .filter(([k]) => k !== "Not set" && k !== "Prefer not to say")
+        .reduce((n, [, v]) => n + v, 0)
+    : 0;
+
   const sparkDau = data.map((d) => d.dau);
   const sparkSignups = data.map((d) => d.newUsers);
   const sparkXp = data.map((d) => d.totalXpEarnedYesterday);
@@ -254,6 +284,27 @@ export default function AdminDashboardPage() {
         />
       </section>
 
+      {/* Age ranges (from onboarding) */}
+      <section>
+        {ageDist ? (
+          <DistributionBar
+            title={`Users by age range · ${ageAnswered} of ${newest.totalUsers} gave an age · Declined = “prefer not to say”, Skipped = never answered`}
+            data={ageData}
+            color="var(--color-secondary)"
+          />
+        ) : (
+          <div className="rounded-2xl bg-surface border border-primary/10 p-5 shadow-sm">
+            <h3 className="text-sm font-semibold text-primary-dark mb-1">
+              Users by age range
+            </h3>
+            <p className="text-sm text-text-secondary">
+              No age data in the {newest.date} snapshot yet. It appears after the
+              updated aggregateDailyMetrics function has run once.
+            </p>
+          </div>
+        )}
+      </section>
+
       {/* Course completion — content-exhaustion signal */}
       <section className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <Scorecard
@@ -300,7 +351,7 @@ export default function AdminDashboardPage() {
       <p className="text-xs text-text-secondary border-t border-primary/10 pt-4">
         <strong>Data quality:</strong> DAU, new signups, and XP earned are
         time-windowed and historically accurate. Snapshot metrics (totals, paid
-        users, onboarding %, streak / level / language distributions, lesson
+        users, onboarding %, streak / level / language / age distributions, lesson
         completion) reflect the state at the time each day was computed;
         backfilled past days show today’s state for those fields.
       </p>
