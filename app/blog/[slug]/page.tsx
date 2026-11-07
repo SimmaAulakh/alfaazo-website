@@ -37,13 +37,18 @@ export async function generateMetadata({
     ...titleWords,
   ];
 
+  // Snippet copy can be tuned for click-through without touching the H1 or
+  // the on-page excerpt (set via scripts/set-post-meta.mjs in the worktree).
+  const seoTitle = post.metaTitle?.trim() || post.title;
+  const seoDescription = post.metaDescription?.trim() || post.excerpt;
+
   return {
-    title: post.title,
-    description: post.excerpt,
+    title: seoTitle,
+    description: seoDescription,
     keywords,
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: seoTitle,
+      description: seoDescription,
       type: "article",
       publishedTime: post.date,
       modifiedTime: post.updated ?? post.date,
@@ -54,8 +59,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
+      title: seoTitle,
+      description: seoDescription,
     },
     alternates: {
       canonical: `https://www.alfaazo.com/blog/${slug}`,

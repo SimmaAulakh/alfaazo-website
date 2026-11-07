@@ -18,6 +18,11 @@ export interface BlogPost {
   date: string;
   /** ISO date of the last substantive revision; shown as "Updated" and used for dateModified. */
   updated?: string;
+  /** Search-snippet title (<title>, OG, Twitter). Falls back to `title`, which stays the H1.
+   *  Keep it under ~55 characters; the layout appends " — Alfaazo". */
+  metaTitle?: string;
+  /** Search-snippet description. Falls back to `excerpt`, which stays the on-page summary. */
+  metaDescription?: string;
   tag: string;
   readTime: string;
   author: string;
