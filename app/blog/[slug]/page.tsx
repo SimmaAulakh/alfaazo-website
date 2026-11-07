@@ -5,7 +5,9 @@ import Footer from "@/components/Footer";
 import { notFound } from "next/navigation";
 import { getAllSlugs, getPostBySlug, getRecentPosts } from "@/lib/blog";
 import { getAuthorByName } from "@/lib/authors";
-import { extractFaqs, stripHtml } from "@/lib/postContent";
+import { extractFaqs, splitForInlineCta, stripHtml } from "@/lib/postContent";
+import InlineAppCta from "@/components/blog/InlineAppCta";
+import StickyAppBar from "@/components/blog/StickyAppBar";
 
 export const revalidate = 300;
 
@@ -179,9 +181,15 @@ export default async function BlogPost({
     });
   }
 
+  // The app CTA is rendered by React between two halves of the post HTML (not
+  // written into Firestore), so its copy and tracking can change without
+  // touching 90 documents. Schema extraction above still reads the full content.
+  const contentParts = splitForInlineCta(post.content);
+
   return (
     <div className="min-h-screen bg-cream">
       <Nav />
+      <StickyAppBar slug={slug} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -283,10 +291,24 @@ export default async function BlogPost({
         )}
 
         {/* Blog Content */}
-        <div
-          className="prose-alfaazo"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        {contentParts ? (
+          <>
+            <div
+              className="prose-alfaazo"
+              dangerouslySetInnerHTML={{ __html: contentParts[0] }}
+            />
+            <InlineAppCta slug={slug} tag={post.tag} />
+            <div
+              className="prose-alfaazo"
+              dangerouslySetInnerHTML={{ __html: contentParts[1] }}
+            />
+          </>
+        ) : (
+          <div
+            className="prose-alfaazo"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        )}
 
         {/* Related Posts */}
         {relatedPosts.length > 0 && (

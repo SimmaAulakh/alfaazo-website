@@ -1,15 +1,7 @@
 "use client";
 
 import Image from "next/image";
-
-function trackClick(label: string) {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    window.gtag("event", "click", {
-      event_category: "download",
-      event_label: label,
-    });
-  }
-}
+import { trackStoreClick } from "@/lib/analytics";
 
 // Framed app screenshots from the design kit (transparent corners, 640×1356 web copies).
 const SCREENS = {
@@ -94,7 +86,13 @@ export default function Hero() {
               href="https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackClick("app_store_hero")}
+              onClick={() =>
+                trackStoreClick({
+                  placement: "hero",
+                  store: "app_store",
+                  legacyLabel: "app_store_hero",
+                })
+              }
               className="group flex items-center gap-3 pl-5 pr-7 py-3 rounded-2xl bg-ink text-white no-underline transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(33,33,33,0.25)] shadow-[0_4px_16px_rgba(33,33,33,0.15)]"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="white" className="opacity-90 group-hover:opacity-100 transition-opacity">
@@ -112,7 +110,13 @@ export default function Hero() {
               href="https://play.google.com/store/apps/details?id=com.alfaazo.app"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackClick("play_store_hero")}
+              onClick={() =>
+                trackStoreClick({
+                  placement: "hero",
+                  store: "play_store",
+                  legacyLabel: "play_store_hero",
+                })
+              }
               className="group flex items-center gap-3 pl-5 pr-7 py-3 rounded-2xl bg-primary/15 text-primary no-underline transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/20 border border-primary/20"
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="opacity-75 group-hover:opacity-100 transition-opacity">

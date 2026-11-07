@@ -37,3 +37,24 @@ export function extractFaqs(
   }
   return faqs;
 }
+
+// Where the in-article app CTA goes: straight after the first table (the reader
+// has just got the words they came for), otherwise one full section in, before
+// the second <h2>. Returns null for posts too short to interrupt, which then
+// render as a single block with only the post's own closing CTA.
+export function splitForInlineCta(html: string): [string, string] | null {
+  const table = /<\/table>/i.exec(html);
+  if (table) {
+    const at = table.index + table[0].length;
+    return [html.slice(0, at), html.slice(at)];
+  }
+
+  const h2 = /<h2[\s>]/gi;
+  let seen = 0;
+  let match: RegExpExecArray | null;
+  while ((match = h2.exec(html)) !== null) {
+    seen += 1;
+    if (seen === 2) return [html.slice(0, match.index), html.slice(match.index)];
+  }
+  return null;
+}

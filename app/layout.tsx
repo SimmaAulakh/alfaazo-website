@@ -185,6 +185,14 @@ const jsonLd = {
   ],
 };
 
+// GA4 runs only on the real production deployment. Dev-server page loads and
+// Vercel preview builds were showing up as users (Oct 2026), swamping the
+// handful of real visitors. A local `next start` of a production build still
+// reports, which is fine for a one-off smoke test.
+const GA_ID = "G-R64WSHTNE7";
+const GA_ENABLED =
+  process.env.NODE_ENV === "production" && process.env.VERCEL_ENV !== "preview";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -202,18 +210,22 @@ export default function RootLayout({
         />
       </head>
       <body>{children}</body>
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-R64WSHTNE7"
-        strategy="afterInteractive"
-      />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-R64WSHTNE7');
-        `}
-      </Script>
+      {GA_ENABLED && (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}');
+            `}
+          </Script>
+        </>
+      )}
     </html>
   );
 }

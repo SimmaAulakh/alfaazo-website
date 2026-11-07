@@ -4,11 +4,9 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { storeFor, storeUrl, trackStoreClick } from "@/lib/analytics";
+import { usePlatform } from "@/lib/usePlatform";
 
-const APP_STORE_URL =
-  "https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308";
-const PLAY_STORE_URL =
-  "https://play.google.com/store/apps/details?id=com.alfaazo.app";
 const START_HERE = "/blog/learn-punjabi-start-here";
 
 type NavItem = {
@@ -24,33 +22,6 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Start Here", href: START_HERE },
   { label: "About", href: "/about" },
 ];
-
-// Same event shape as the homepage store badges (components/CTA.tsx), so the
-// header button shows up alongside them in GA4.
-function trackClick(label: string) {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    window.gtag("event", "click", {
-      event_category: "download",
-      event_label: label,
-    });
-  }
-}
-
-type Platform = "ios" | "android" | "mac" | "other";
-
-function detectPlatform(): Platform {
-  if (typeof navigator === "undefined") return "other";
-  const ua = navigator.userAgent || "";
-  // iPadOS identifies as a Mac but has touch points.
-  const isIpadOs =
-    /Macintosh/i.test(ua) &&
-    typeof navigator.maxTouchPoints === "number" &&
-    navigator.maxTouchPoints > 1;
-  if (/iPhone|iPad|iPod/i.test(ua) || isIpadOs) return "ios";
-  if (/Android/i.test(ua)) return "android";
-  if (/Macintosh/i.test(ua)) return "mac";
-  return "other";
-}
 
 const CTA_BASE =
   "no-underline inline-flex items-center gap-1.5 rounded-full bg-primary text-white font-semibold tracking-wide shadow-[0_4px_16px_rgba(103,58,183,0.28)] hover:bg-primary-dark hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap";
@@ -81,14 +52,14 @@ export default function Nav() {
 
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  const [mobileOpen, setMobileOpen] = useState(false);
-  // Resolved after mount so server and client render the same markup;
-  // null until then.
-  const [platform, setPlatform] = useState<Platform | null>(null);
-
-  useEffect(() => {
-    setPlatform(detectPlatform());
-  }, []);
+  // The mobile menu remembers which route it was opened on, so navigating
+  // (links, back/forward) closes it without a route-change effect.
+  const [menuOpenedOn, setMenuOpenedOn] = useState<string | null>(null);
+  const mobileOpen = menuOpenedOn === pathname;
+  const setMobileOpen = (open: boolean) =>
+    setMenuOpenedOn(open ? pathname : null);
+  // null on the server and until hydration; see lib/usePlatform.
+  const platform = usePlatform();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -118,11 +89,6 @@ export default function Nav() {
     return () => observer.disconnect();
   }, [isHomepage]);
 
-  // Close the mobile menu whenever the route changes.
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
-
   function getItemHref(item: NavItem) {
     // On homepage, use anchor scroll for items that have anchors
     if (isHomepage && item.anchor) {
@@ -151,20 +117,25 @@ export default function Nav() {
   // Android and other desktops to Google Play, which can install to a linked
   // Android phone. Until the platform is known (before hydration) it falls
   // back to the download section.
+  const store = platform === null ? null : storeFor(platform);
   const appHref =
-    platform === null
+    store === null
       ? isHomepage
         ? "#download"
         : "/#download"
-      : platform === "ios" || platform === "mac"
-        ? APP_STORE_URL
-        : PLAY_STORE_URL;
-  const appIsExternal = appHref.startsWith("http");
-  const appLinkProps = appIsExternal
+      : storeUrl(store);
+  const appLinkProps = store
     ? { target: "_blank", rel: "noopener noreferrer" }
     : {};
   const onAppClick = () => {
-    trackClick(`get_app_nav_${platform ?? "unknown"}${isHomepage ? "_home" : ""}`);
+    if (store) {
+      trackStoreClick({
+        placement: "nav",
+        store,
+        platform,
+        legacyLabel: `get_app_nav_${platform}${isHomepage ? "_home" : ""}`,
+      });
+    }
     setMobileOpen(false);
   };
 

@@ -1,13 +1,6 @@
 "use client";
 
-function trackClick(label: string) {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    window.gtag("event", "click", {
-      event_category: "download",
-      event_label: label,
-    });
-  }
-}
+import { trackStoreClick } from "@/lib/analytics";
 
 export default function CTA() {
   return (
@@ -43,7 +36,13 @@ export default function CTA() {
                   href="https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => trackClick("app_store_cta")}
+                  onClick={() =>
+                    trackStoreClick({
+                      placement: "home_cta",
+                      store: "app_store",
+                      legacyLabel: "app_store_cta",
+                    })
+                  }
                   className="group flex items-center gap-3 pl-5 pr-7 py-3 rounded-2xl bg-white text-primary-dark no-underline transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(255,255,255,0.25)] shadow-[0_4px_16px_rgba(255,255,255,0.1)]"
                 >
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="opacity-80 group-hover:opacity-100 transition-opacity">
@@ -59,7 +58,13 @@ export default function CTA() {
                   href="https://play.google.com/store/apps/details?id=com.alfaazo.app"
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() => trackClick("play_store_cta")}
+                  onClick={() =>
+                    trackStoreClick({
+                      placement: "home_cta",
+                      store: "play_store",
+                      legacyLabel: "play_store_cta",
+                    })
+                  }
                   className="group flex items-center gap-3 pl-5 pr-7 py-3 rounded-2xl bg-white/10 text-white no-underline border border-white/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/15"
                 >
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="opacity-70 group-hover:opacity-100 transition-opacity">
