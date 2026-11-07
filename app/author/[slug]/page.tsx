@@ -21,7 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const author = getAuthorBySlug(slug);
-  if (!author) return {};
+  if (!author) return { title: "Page not found", robots: { index: false, follow: true } };
 
   const url = `https://www.alfaazo.com/author/${author.slug}`;
   return {

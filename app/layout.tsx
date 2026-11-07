@@ -160,11 +160,8 @@ const jsonLd = {
       author: { "@type": "Organization", name: "Codefeb" },
       downloadUrl: "https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308",
       installUrl: "https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308",
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "5",
-        ratingCount: "1",
-      },
+      // No aggregateRating until the stores report a real count: a self-published
+      // 5★ from one review was producing review snippets on every article.
     },
     {
       "@type": "MobileApplication",

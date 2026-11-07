@@ -52,6 +52,9 @@ const nextConfig: NextConfig = {
       { source: "/blog/unlocking-the-beauty-of-punjabi-script-a-beginners-guide-to-gurmukhi", destination: "/blog/beginners-guide-gurmukhi-alphabet", permanent: true },
       { source: "/blog/unlocking-the-charm-of-punjabi-top-10-essential-phrases-for-beginners", destination: "/blog/mastering-the-basics-common-punjabi-phrases-for-daily-use", permanent: true },
       { source: "/blog/unlocking-the-richness-of-punjabi-top-10-common-phrases-for-beginners", destination: "/blog/mastering-the-basics-common-punjabi-phrases-for-daily-use", permanent: true },
+      // Mistyped/shortened variants of the Duolingo post that Google had indexed as 404s.
+      { source: "/blog/does-duolingo-teach-punjabi", destination: "/blog/does-duolingo-teach-punjabi-best-alternatives", permanent: true },
+      { source: "/blog/does-duolingo-teach-punjabi-alternative", destination: "/blog/does-duolingo-teach-punjabi-best-alternatives", permanent: true },
     ];
   },
 };

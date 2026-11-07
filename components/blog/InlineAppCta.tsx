@@ -27,7 +27,7 @@ const COPY: Record<string, { heading: string; body: string }> = {
   default: {
     heading: "Hear Punjabi spoken by native speakers",
     body:
-      "Alfaazo teaches everyday words like these with audio and bite-sized lessons. Free, ten minutes a day.",
+      "Alfaazo teaches everyday Punjabi with native audio and bite-sized lessons. Free, ten minutes a day.",
   },
 };
 

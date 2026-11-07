@@ -25,7 +25,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post) return {};
+  // An empty object here let the 404 inherit the homepage title, which Search
+  // Console then indexed as duplicate titles on dead URLs.
+  if (!post) return { title: "Page not found", robots: { index: false, follow: true } };
 
   // Auto-generate keywords from title and tag
   const titleWords = post.title.toLowerCase().split(/[\s—:,]+/).filter(w => w.length > 3);
@@ -189,7 +191,13 @@ export default async function BlogPost({
   // The app CTA is rendered by React between two halves of the post HTML (not
   // written into Firestore), so its copy and tracking can change without
   // touching 90 documents. Schema extraction above still reads the full content.
-  const contentParts = splitForInlineCta(post.content);
+  // Posts that already pitch the app in their body (comparison and "best app"
+  // pieces, with store links before the split point or beyond the usual closing
+  // pair) don't get a second card: it read as promotional stacking.
+  const split = splitForInlineCta(post.content);
+  const storeLinkCount = (post.content.match(/apps\.apple\.com|play\.google\.com/g) ?? []).length;
+  const pitchesEarly = split ? /apps\.apple\.com|play\.google\.com/.test(split[0]) : false;
+  const contentParts = split && storeLinkCount <= 2 && !pitchesEarly ? split : null;
 
   return (
     <div className="min-h-screen bg-cream">

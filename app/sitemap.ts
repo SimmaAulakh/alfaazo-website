@@ -1,6 +1,15 @@
 import type { MetadataRoute } from "next";
-import { getAllSlugs, getAllTags } from "@/lib/blog";
+import { getAllPosts, type BlogPost } from "@/lib/blog";
 import { AUTHORS } from "@/lib/authors";
+
+// Real modification dates. Every entry used to carry `new Date()` (the request
+// time), which told crawlers the whole site changed every minute and gave them
+// no reason to prioritise a post that was actually edited.
+const modifiedAt = (p: BlogPost) => new Date(p.updated ?? p.date);
+const latestOf = (posts: BlogPost[]) =>
+  posts.length
+    ? new Date(Math.max(...posts.map((p) => modifiedAt(p).getTime())))
+    : undefined;
 
 // Served fresh on every request. Traffic here is crawlers only, and the ISR copy
 // was observed staying stale for 14h+ (new posts never appeared until a redeploy),
@@ -10,60 +19,44 @@ export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.alfaazo.com";
 
-  const [blogSlugs, tags] = await Promise.all([getAllSlugs(), getAllTags()]);
+  const posts = await getAllPosts();
+  const tags = [...new Set(posts.map((p) => p.tag))];
+  const latestPost = latestOf(posts);
 
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: latestPost,
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: latestPost,
       changeFrequency: "weekly",
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
+    // Static pages carry no lastModified: we don't track it, and a fake one is
+    // worse than none.
+    { url: `${baseUrl}/about`, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${baseUrl}/contact`, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${baseUrl}/privacy`, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${baseUrl}/terms`, changeFrequency: "yearly", priority: 0.3 },
     ...tags.map((tag) => ({
       url: `${baseUrl}/blog/tag/${tag}`,
-      lastModified: new Date(),
+      lastModified: latestOf(posts.filter((p) => p.tag === tag)),
       changeFrequency: "weekly" as const,
       priority: 0.5,
     })),
     ...AUTHORS.map((a) => ({
       url: `${baseUrl}/author/${a.slug}`,
-      lastModified: new Date(),
+      lastModified: latestOf(posts.filter((p) => p.author === a.name)),
       changeFrequency: "monthly" as const,
       priority: 0.4,
     })),
-    ...blogSlugs.map((slug) => ({
-      url: `${baseUrl}/blog/${slug}`,
-      lastModified: new Date(),
+    ...posts.map((p) => ({
+      url: `${baseUrl}/blog/${p.slug}`,
+      lastModified: modifiedAt(p),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
