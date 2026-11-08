@@ -16,7 +16,9 @@ export type StorePlacement =
   | "hero"
   | "home_cta"
   | "post_inline"
-  | "post_sticky";
+  | "post_sticky"
+  | "app_page"
+  | "pricing_page";
 
 export function detectPlatform(): Platform {
   if (typeof navigator === "undefined") return "other";

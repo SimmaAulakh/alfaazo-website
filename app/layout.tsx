@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Playfair_Display, DM_Sans, Noto_Nastaliq_Urdu } from "next/font/google";
 import "./globals.css";
+import { mobileApplicationJsonLd } from "@/lib/appFacts";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair-display",
@@ -145,40 +146,10 @@ const jsonLd = {
       availableLanguage: "pa",
       url: "https://www.alfaazo.com",
     },
-    {
-      "@type": "MobileApplication",
-      name: "Alfaazo — Learn Punjabi",
-      operatingSystem: "iOS",
-      applicationCategory: "EducationalApplication",
-      description:
-        "The best app to learn Punjabi. Master Gurmukhi script, everyday phrases, and real-world conversations with bite-sized lessons.",
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "USD",
-      },
-      author: { "@type": "Organization", name: "Codefeb" },
-      downloadUrl: "https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308",
-      installUrl: "https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308",
-      // No aggregateRating until the stores report a real count: a self-published
-      // 5★ from one review was producing review snippets on every article.
-    },
-    {
-      "@type": "MobileApplication",
-      name: "Alfaazo — Learn Punjabi",
-      operatingSystem: "Android",
-      applicationCategory: "EducationalApplication",
-      description:
-        "The best app to learn Punjabi. Master Gurmukhi script, everyday phrases, and real-world conversations with bite-sized lessons.",
-      offers: {
-        "@type": "Offer",
-        price: "0",
-        priceCurrency: "USD",
-      },
-      author: { "@type": "Organization", name: "Codefeb" },
-      downloadUrl: "https://play.google.com/store/apps/details?id=com.alfaazo.app",
-      installUrl: "https://play.google.com/store/apps/details?id=com.alfaazo.app",
-    },
+    // Site-wide app nodes carry no aggregateRating: a self-published 5★ from
+    // one review was producing review snippets on every article. /app shows
+    // the live App Store rating in its text and adds it there only.
+    ...mobileApplicationJsonLd(),
   ],
 };
 

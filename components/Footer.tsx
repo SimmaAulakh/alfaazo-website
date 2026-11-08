@@ -31,6 +31,8 @@ export default function Footer() {
           {/* Links */}
           <div className="flex items-center gap-8 flex-wrap">
             {[
+              { label: "The app", href: "/app" },
+              { label: "Pricing", href: "/pricing" },
               { label: "About", href: "/about" },
               { label: "Blog", href: "/blog" },
               { label: "Contact", href: "/contact" },

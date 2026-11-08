@@ -38,6 +38,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     // Static pages carry no lastModified: we don't track it, and a fake one is
     // worse than none.
+    { url: `${baseUrl}/app`, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${baseUrl}/pricing`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${baseUrl}/about`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/contact`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/privacy`, changeFrequency: "yearly", priority: 0.3 },

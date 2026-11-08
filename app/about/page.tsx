@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Alfaazo — The Best Free Punjabi Learning App",
+  title: "About Alfaazo — The Punjabi Learning App and the Team Behind It",
   description:
-    "Alfaazo is a free language learning app designed to teach Punjabi through bite-sized lessons. Built by Codefeb, available on iOS and Android.",
+    "Alfaazo is a Punjabi-only learning app: 112 Gurmukhi-first lessons with native audio, built by Simranjeet Singh at Codefeb. Free to download on iOS and Android.",
   keywords: [
     "what is Alfaazo",
     "Alfaazo Punjabi app",
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
     "about Alfaazo",
   ],
   openGraph: {
-    title: "About Alfaazo — The Best Free Punjabi Learning App",
+    title: "About Alfaazo — The Punjabi Learning App and the Team Behind It",
     description:
-      "Alfaazo is a free language learning app designed to teach Punjabi through bite-sized lessons. Built by Codefeb.",
+      "Alfaazo is a Punjabi-only learning app: 112 Gurmukhi-first lessons with native audio, built by Simranjeet Singh at Codefeb.",
     url: "https://www.alfaazo.com/about",
     siteName: "Alfaazo",
     type: "website",
@@ -39,7 +39,8 @@ const aboutJsonLd = {
     url: "https://codefeb.com",
     logo: "https://www.alfaazo.com/logo.png",
     description:
-      "Codefeb builds tools for language preservation, starting with Alfaazo — a free Punjabi learning app.",
+      "Codefeb builds tools for language preservation, starting with Alfaazo — a Punjabi learning app by Simranjeet Singh.",
+    founder: { "@type": "Person", name: "Simranjeet Singh" },
     sameAs: ["https://www.instagram.com/alfaazoapp"],
   },
 };
@@ -76,8 +77,10 @@ export default function AboutPage() {
         <div className="prose-alfaazo">
           {/* Entity definition paragraph — optimised for LLM extraction */}
           <p className="text-[1.1rem] leading-relaxed">
-            <strong>Alfaazo</strong> is a free language learning app designed to
-            teach Punjabi through bite-sized lessons. Built by{" "}
+            <strong>Alfaazo</strong> is a Punjabi-only learning app that
+            teaches the Gurmukhi script stroke by stroke and 1,200+ everyday
+            words and phrases with native-speaker audio, in 112 bite-sized
+            lessons across 23 units. It is built by Simranjeet Singh at{" "}
             <a
               href="https://codefeb.com"
               target="_blank"
@@ -85,9 +88,7 @@ export default function AboutPage() {
             >
               Codefeb
             </a>
-            , Alfaazo teaches Gurmukhi script with stroke-by-stroke guides,
-            everyday Punjabi phrases with native audio, and real-world
-            conversations rooted in cultural context. Available on{" "}
+            . Free to download on{" "}
             <a
               href="https://apps.apple.com/us/app/alfaazo-learn-punjabi/id6759987308"
               target="_blank"
@@ -103,8 +104,11 @@ export default function AboutPage() {
             >
               Android
             </a>
-            , Alfaazo is specifically designed for heritage speakers reconnecting
-            with their mother tongue and new learners starting from scratch.
+            , with an optional Alfaazo Plus upgrade, Alfaazo is designed for
+            heritage speakers reconnecting with their mother tongue and new
+            learners starting from scratch. The full fact sheet is on{" "}
+            <Link href="/app">the app page</Link>; prices are on{" "}
+            <Link href="/pricing">the pricing page</Link>.
           </p>
 
           <h2>Our Mission</h2>

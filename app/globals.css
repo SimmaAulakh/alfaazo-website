@@ -374,3 +374,9 @@ body {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* Store buttons rendered inside article prose keep their own styling. */
+.prose-alfaazo .store-buttons a {
+  text-decoration: none;
+  font-weight: inherit;
+}

@@ -19,6 +19,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Features", href: "/#features", anchor: "features" },
   { label: "Languages", href: "/#languages", anchor: "languages" },
   { label: "Blog", href: "/blog" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Start Here", href: START_HERE },
   { label: "About", href: "/about" },
 ];
