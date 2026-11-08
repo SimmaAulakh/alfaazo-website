@@ -31,7 +31,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Can I learn Punjabi for free?",
     answer:
-      "Yes. Alfaazo is completely free to download on iOS and Android. The app includes Gurmukhi script lessons, everyday phrases, pronunciation practice with native audio, and culturally-rooted conversations — all at no cost.",
+      "Yes. Alfaazo is free to download on iOS and Android, with an optional Alfaazo Plus upgrade. It includes Gurmukhi script lessons, everyday phrases, pronunciation practice with native audio, and culturally-rooted conversations.",
   },
   {
     question: "How do I learn Punjabi online for free?",
@@ -41,7 +41,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "What is the best app to learn Punjabi in 2026?",
     answer:
-      "Alfaazo is the top-rated Punjabi learning app in 2026. It is purpose-built for Punjabi — unlike generic language apps, it teaches Gurmukhi script with stroke-by-stroke guides, real-world conversations, and cultural context. It is free on both iOS and Android.",
+      "Alfaazo is built only for Punjabi — unlike generic language apps, it teaches Gurmukhi script with stroke-by-stroke guides, real-world conversations, and cultural context. It is free to download on both iOS and Android, with an optional Plus upgrade.",
   },
   {
     question: "How long does it take to learn the Gurmukhi alphabet?",

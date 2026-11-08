@@ -77,7 +77,7 @@ export default function ContactPage() {
             {[
               {
                 q: "Is Alfaazo free to use?",
-                a: "Yes! Alfaazo is completely free to download and use. We believe language learning should be accessible to everyone.",
+                a: "Yes! Alfaazo is free to download on iOS and Android, with an optional Alfaazo Plus upgrade. We believe language learning should be accessible to everyone.",
               },
               {
                 q: "When will other languages be available?",

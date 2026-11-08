@@ -25,10 +25,10 @@ const TAG_LABEL: Record<string, string> = {
 
 const INTRO = `# Alfaazo
 
-> Alfaazo is a free app for learning Punjabi, built by Codefeb. It teaches the Gurmukhi script, everyday phrases and real conversations with native audio in bite-sized lessons, and publishes an in-depth Punjabi learning blog written by Simranjeet Aulakh.
+> Alfaazo is a free-to-download app for learning Punjabi, built by Codefeb. It teaches the Gurmukhi script, everyday phrases and real conversations with native audio in bite-sized lessons, and publishes an in-depth Punjabi learning blog written by Simranjeet Aulakh.
 
 ## About
-- App: Alfaazo — Learn Punjabi (free, no paid tier required to learn)
+- App: Alfaazo — Learn Punjabi (free to download; optional Alfaazo Plus upgrade)
 - Developer: Codefeb (https://codefeb.com)
 - Website: ${SITE}
 - iOS: ${IOS}
@@ -86,7 +86,7 @@ export function buildLlmsTxt(posts: BlogPost[]): string {
 export function buildLlmsFullTxt(posts: BlogPost[]): string {
   const entity = `# Alfaazo — Complete Reference
 
-> Alfaazo is a free app for learning Punjabi, built by Codefeb. It teaches the Gurmukhi script, everyday phrases and real conversations with native audio in bite-sized lessons. Available on iOS and Android.
+> Alfaazo is a free-to-download app for learning Punjabi, built by Codefeb. It teaches the Gurmukhi script, everyday phrases and real conversations with native audio in bite-sized lessons. Available on iOS and Android.
 
 ## What Alfaazo is
 Alfaazo (from the Urdu/Punjabi word for "words") is a Punjabi-only language learning app. It teaches the complete Gurmukhi alphabet with stroke-by-stroke writing guides and native audio, everyday phrases organised by real situations (greetings, family, food, shopping, travel), and conversations with cultural context such as proverbs, festival greetings and etiquette. Lessons take five to ten minutes. It is built for heritage speakers in the Punjabi diaspora (Canada, UK, USA, Australia) who understand Punjabi but cannot read or speak it confidently, for partners of Punjabi speakers, and for complete beginners.
