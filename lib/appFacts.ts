@@ -13,7 +13,7 @@ export const APP = {
   /** Store listing name, used verbatim in schema and copy. */
   name: "Alfaazo: Learn Punjabi",
   shortName: "Alfaazo",
-  developer: "Simranjeet Singh",
+  developer: "Simranjeet Aulakh",
   studio: "Codefeb",
   studioUrl: "https://codefeb.com",
   instagram: "https://www.instagram.com/alfaazoapp",

@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About Alfaazo — The Punjabi Learning App and the Team Behind It",
   description:
-    "Alfaazo is a Punjabi-only learning app: 112 Gurmukhi-first lessons with native audio, built by Simranjeet Singh at Codefeb. Free to download on iOS and Android.",
+    "Alfaazo is a Punjabi-only learning app: 112 Gurmukhi-first lessons with native audio, built by Simranjeet Aulakh at Codefeb. Free to download on iOS and Android.",
   keywords: [
     "what is Alfaazo",
     "Alfaazo Punjabi app",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About Alfaazo — The Punjabi Learning App and the Team Behind It",
     description:
-      "Alfaazo is a Punjabi-only learning app: 112 Gurmukhi-first lessons with native audio, built by Simranjeet Singh at Codefeb.",
+      "Alfaazo is a Punjabi-only learning app: 112 Gurmukhi-first lessons with native audio, built by Simranjeet Aulakh at Codefeb.",
     url: "https://www.alfaazo.com/about",
     siteName: "Alfaazo",
     type: "website",
@@ -39,8 +39,8 @@ const aboutJsonLd = {
     url: "https://codefeb.com",
     logo: "https://www.alfaazo.com/logo.png",
     description:
-      "Codefeb builds tools for language preservation, starting with Alfaazo — a Punjabi learning app by Simranjeet Singh.",
-    founder: { "@type": "Person", name: "Simranjeet Singh" },
+      "Codefeb builds tools for language preservation, starting with Alfaazo — a Punjabi learning app by Simranjeet Aulakh.",
+    founder: { "@type": "Person", name: "Simranjeet Aulakh", url: "https://www.alfaazo.com/author/simranjeet-aulakh" },
     sameAs: ["https://www.instagram.com/alfaazoapp"],
   },
 };
@@ -80,7 +80,7 @@ export default function AboutPage() {
             <strong>Alfaazo</strong> is a Punjabi-only learning app that
             teaches the Gurmukhi script stroke by stroke and 1,200+ everyday
             words and phrases with native-speaker audio, in 112 bite-sized
-            lessons across 23 units. It is built by Simranjeet Singh at{" "}
+            lessons across 23 units. It is built by Simranjeet Aulakh at{" "}
             <a
               href="https://codefeb.com"
               target="_blank"
