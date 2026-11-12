@@ -50,6 +50,7 @@ const INTRO = `# Alfaazo
 - ${SITE}/app : What the app teaches, who it is for, facts and FAQ
 - ${SITE}/pricing : Free plan vs Alfaazo Plus, prices
 - ${SITE}/compare : Alfaazo vs Ling, Pimsleur and Duolingo for Punjabi, side by side with sources
+- ${SITE}/press : Press kit — boilerplate, checked facts, founder, logo and screenshots
 - ${SITE}/blog : Blog index
 - ${SITE}/about : About Alfaazo and Codefeb
 - ${SITE}/contact : Contact
