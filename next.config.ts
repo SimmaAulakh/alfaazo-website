@@ -50,6 +50,10 @@ const nextConfig: NextConfig = {
       { source: "/blog/unlocking-punjabi-top-phrases-for-absolute-beginners", destination: "/blog/mastering-the-basics-common-punjabi-phrases-for-daily-use", permanent: true },
       { source: "/blog/unlocking-the-beauty-of-punjabi-a-beginners-guide-to-common-phrases", destination: "/blog/mastering-the-basics-common-punjabi-phrases-for-daily-use", permanent: true },
       { source: "/blog/unlocking-the-beauty-of-punjabi-script-a-beginners-guide-to-gurmukhi", destination: "/blog/beginners-guide-gurmukhi-alphabet", permanent: true },
+      // Nov 2026: three March seed posts Google never indexed, folded into the pillar / why-learn post.
+      { source: "/blog/10-essential-punjabi-phrases", destination: "/blog/mastering-the-basics-common-punjabi-phrases-for-daily-use", permanent: true },
+      { source: "/blog/why-learning-mother-tongue-matters", destination: "/blog/why-learn-punjabi-in-2026", permanent: true },
+      { source: "/blog/importance-of-learning-punjabi-language-in-2026", destination: "/blog/why-learn-punjabi-in-2026", permanent: true },
       { source: "/blog/unlocking-the-charm-of-punjabi-top-10-essential-phrases-for-beginners", destination: "/blog/mastering-the-basics-common-punjabi-phrases-for-daily-use", permanent: true },
       { source: "/blog/unlocking-the-richness-of-punjabi-top-10-common-phrases-for-beginners", destination: "/blog/mastering-the-basics-common-punjabi-phrases-for-daily-use", permanent: true },
       // Mistyped/shortened variants of the Duolingo post that Google had indexed as 404s.
