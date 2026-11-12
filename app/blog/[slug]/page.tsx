@@ -193,10 +193,12 @@ export default async function BlogPost({
   // touching 90 documents. Schema extraction above still reads the full content.
   // Posts that already pitch the app in their body (comparison and "best app"
   // pieces, with store links before the split point or beyond the usual closing
-  // pair) don't get a second card: it read as promotional stacking.
+  // pair) don't get a second card: it read as promotional stacking. Links to
+  // the site's own /app and /pricing fact pages count as pitches too.
   const split = splitForInlineCta(post.content);
-  const storeLinkCount = (post.content.match(/apps\.apple\.com|play\.google\.com/g) ?? []).length;
-  const pitchesEarly = split ? /apps\.apple\.com|play\.google\.com/.test(split[0]) : false;
+  const PITCH = /apps\.apple\.com|play\.google\.com|href="\/(?:app|pricing)(?:[\/"#?])/g;
+  const storeLinkCount = (post.content.match(PITCH) ?? []).length;
+  const pitchesEarly = split ? new RegExp(PITCH.source).test(split[0]) : false;
   const contentParts = split && storeLinkCount <= 2 && !pitchesEarly ? split : null;
 
   return (
@@ -294,13 +296,26 @@ export default async function BlogPost({
           </div>
         </div>
 
-        {/* Excerpt Summary */}
-        {post.excerpt && (
-          <div className="mb-10 p-5 rounded-2xl bg-primary/5 border-l-4 border-primary/40">
-            <p className="text-[0.95rem] text-warm-brown/70 leading-relaxed m-0 italic">
-              {post.excerpt}
+        {/* Quick answer (decision posts) or excerpt summary. The quick answer is
+            the first body text on the page so search and answer engines lift it
+            as the snippet; the excerpt still feeds listings and metadata. */}
+        {post.quickAnswer?.trim() ? (
+          <div className="quick-answer mb-10 p-5 md:p-6 rounded-2xl bg-primary/5 border-l-4 border-primary/40">
+            <p className="m-0 mb-2 text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-primary">
+              Quick answer
+            </p>
+            <p className="m-0 text-[1.05rem] text-ink leading-relaxed">
+              {post.quickAnswer.trim()}
             </p>
           </div>
+        ) : (
+          post.excerpt && (
+            <div className="mb-10 p-5 rounded-2xl bg-primary/5 border-l-4 border-primary/40">
+              <p className="text-[0.95rem] text-warm-brown/70 leading-relaxed m-0 italic">
+                {post.excerpt}
+              </p>
+            </div>
+          )
         )}
 
         {/* Blog Content */}

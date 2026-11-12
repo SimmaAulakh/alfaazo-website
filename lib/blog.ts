@@ -23,6 +23,9 @@ export interface BlogPost {
   metaTitle?: string;
   /** Search-snippet description. Falls back to `excerpt`, which stays the on-page summary. */
   metaDescription?: string;
+  /** 40–70 word direct answer to the title's question, shown in a "Quick answer" box
+   *  above the body in place of the excerpt box, and listed in llms-full.txt. Plain text. */
+  quickAnswer?: string;
   tag: string;
   readTime: string;
   author: string;

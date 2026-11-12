@@ -127,7 +127,8 @@ Each entry gives the title, URL, dates, a summary and the article's own FAQ answ
         ? "\n" + faqs.map((f) => `- Q: ${f.question}\n  A: ${f.answer}`).join("\n")
         : "";
       const dates = `Published ${p.date}${p.updated && p.updated > p.date ? `, updated ${p.updated}` : ""}`;
-      return `### ${p.title}\nURL: ${postUrl(p)}\n${dates} · ${p.tag} · by ${p.author}\n\n${p.excerpt.trim()}${faqText}`;
+      const quick = p.quickAnswer?.trim() ? `\nQuick answer: ${p.quickAnswer.trim()}\n` : "";
+      return `### ${p.title}\nURL: ${postUrl(p)}\n${dates} · ${p.tag} · by ${p.author}\n${quick}\n${p.excerpt.trim()}${faqText}`;
     });
 
   return [entity, ...articles, `Generated from the live blog index. ${posts.length} published articles.`].join("\n\n") + "\n";
