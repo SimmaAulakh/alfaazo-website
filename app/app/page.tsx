@@ -219,7 +219,9 @@ export default async function AppPage() {
             </li>
           </ul>
           <p>
-            Our full comparison, including apps we recommend alongside Alfaazo, is in{" "}
+            Side-by-side pages with sources: <Link href="/compare/alfaazo-vs-ling">Alfaazo vs Ling</Link>,{" "}
+            <Link href="/compare/alfaazo-vs-pimsleur">Alfaazo vs Pimsleur</Link> and{" "}
+            <Link href="/compare/alfaazo-vs-duolingo">Alfaazo vs Duolingo</Link>. Our full comparison, including apps we recommend alongside Alfaazo, is in{" "}
             <Link href="/blog/best-app-to-learn-punjabi-2026">Best Apps to Learn Punjabi in 2026</Link> and{" "}
             <Link href="/blog/which-language-apps-have-punjabi">Which Language Apps Have Punjabi?</Link>.
           </p>

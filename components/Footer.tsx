@@ -33,6 +33,7 @@ export default function Footer() {
             {[
               { label: "The app", href: "/app" },
               { label: "Pricing", href: "/pricing" },
+              { label: "Compare", href: "/compare" },
               { label: "About", href: "/about" },
               { label: "Blog", href: "/blog" },
               { label: "Contact", href: "/contact" },

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllPosts, type BlogPost } from "@/lib/blog";
 import { AUTHORS } from "@/lib/authors";
+import { COMPARISONS } from "@/lib/compare";
 
 // Real modification dates. Every entry used to carry `new Date()` (the request
 // time), which told crawlers the whole site changed every minute and gave them
@@ -40,6 +41,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // worse than none.
     { url: `${baseUrl}/app`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${baseUrl}/pricing`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${baseUrl}/compare`, changeFrequency: "monthly", priority: 0.7 },
+    ...COMPARISONS.map((c) => ({ url: `${baseUrl}/compare/${c.slug}`, changeFrequency: "monthly" as const, priority: 0.8 })),
     { url: `${baseUrl}/about`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/contact`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${baseUrl}/privacy`, changeFrequency: "yearly", priority: 0.3 },

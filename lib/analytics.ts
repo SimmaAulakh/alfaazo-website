@@ -18,7 +18,8 @@ export type StorePlacement =
   | "post_inline"
   | "post_sticky"
   | "app_page"
-  | "pricing_page";
+  | "pricing_page"
+  | "compare_page";
 
 export function detectPlatform(): Platform {
   if (typeof navigator === "undefined") return "other";
