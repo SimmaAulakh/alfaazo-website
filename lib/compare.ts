@@ -55,7 +55,7 @@ export const COMPARISONS: Comparison[] = [
     title: "Alfaazo vs Ling for Learning Punjabi (2026): Which App Should You Pick?",
     metaTitle: "Alfaazo vs Ling for Punjabi (2026)",
     description:
-      "Alfaazo and Ling compared for learning Punjabi: Gurmukhi teaching, audio, course size, free plans, price (US$49.99 vs US$89.99 a year), platforms and ratings, checked November 2026.",
+      "Alfaazo vs Ling for Punjabi: Gurmukhi teaching, audio, course size, free plans, price (US$49.99 vs US$89.99 a year) and ratings, checked Nov 2026.",
     quickAnswer:
       "Pick Alfaazo if Punjabi is the language you want: it is built only for Punjabi, teaches Gurmukhi stroke by stroke from the first lesson, records every word with native speakers, gives you 14 units free and costs US$49.99 a year. Pick Ling if you want one subscription for several languages, a web app and game-style drills across 80 languages; Ling Pro is US$89.99 a year and the free tier is the first two units.",
     intro:
@@ -116,7 +116,7 @@ export const COMPARISONS: Comparison[] = [
     title: "Alfaazo vs Pimsleur for Learning Punjabi (2026): Audio Course or Full Course?",
     metaTitle: "Alfaazo vs Pimsleur for Punjabi (2026)",
     description:
-      "Alfaazo and Pimsleur Punjabi compared: Pimsleur is 30 audio-only lessons of Eastern Punjabi with no script; Alfaazo is a 112-lesson Gurmukhi-first course. Price, free plans, ratings, checked November 2026.",
+      "Alfaazo vs Pimsleur Punjabi: 30 audio-only lessons with no script against a 112-lesson Gurmukhi-first course. Price and free plans, checked Nov 2026.",
     quickAnswer:
       "They do different jobs. Pimsleur Punjabi is one level of 30 half-hour audio lessons that teach you to speak and understand basic Eastern Punjabi hands-free, with no reading or writing. Alfaazo is a 112-lesson course that teaches the Gurmukhi script, 1,200+ words and everyday conversation on your phone, free to download with an optional Plus plan. Pick Pimsleur for the car, Alfaazo to read and write, and many learners use both.",
     intro:
@@ -175,7 +175,7 @@ export const COMPARISONS: Comparison[] = [
     title: "Alfaazo vs Duolingo for Punjabi (2026): Duolingo Doesn't Teach It — Here's the Difference",
     metaTitle: "Alfaazo vs Duolingo for Punjabi (2026)",
     description:
-      "Duolingo has no course that teaches Punjabi; its 2026 course teaches English to Punjabi speakers. What that means, and how Alfaazo's Punjabi course compares on script, audio, lessons and price.",
+      "Duolingo has no course that teaches Punjabi; its 2026 course teaches English to Punjabi speakers. How Alfaazo compares on script, audio and price.",
     quickAnswer:
       "Duolingo cannot be used to learn Punjabi: it has no course that teaches Punjabi to English speakers or anyone else. The course it launched on 7 September 2026, 'Learn English from Punjabi', teaches English to Punjabi speakers. Alfaazo is a Punjabi-only course of 112 lessons that teaches the Gurmukhi script and 1,200+ words with native audio, free to download on iOS and Android with an optional Plus plan.",
     intro:

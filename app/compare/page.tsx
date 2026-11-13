@@ -7,12 +7,12 @@ import { CHECKED, COMPARISONS, COMPARE_URL } from "@/lib/compare";
 
 export const revalidate = 86400;
 
-const TITLE = "Alfaazo compared with Ling, Pimsleur and Duolingo for Punjabi";
+const TITLE = "Alfaazo compared with Ling, Pimsleur and Duolingo";
 const DESCRIPTION =
-  "Side-by-side comparisons of Alfaazo with the other apps people consider for Punjabi: Ling, Pimsleur and Duolingo. Script, audio, course size, free plans, prices and ratings, checked November 2026.";
+  "Alfaazo compared with Ling, Pimsleur and Duolingo for Punjabi: script, audio, course size, free plans, prices and ratings, checked November 2026.";
 
 export const metadata: Metadata = {
-  title: { absolute: `${TITLE} — Alfaazo` },
+  title: { absolute: TITLE },
   description: DESCRIPTION,
   alternates: { canonical: COMPARE_URL },
   openGraph: { title: TITLE, description: DESCRIPTION, url: COMPARE_URL, siteName: "Alfaazo", type: "website", locale: "en_US" },

@@ -7,7 +7,7 @@ import { APP, PRICE_TEXT, SITE_URL } from "@/lib/appFacts";
 
 const URL = `${SITE_URL}/pricing`;
 const TITLE = "Alfaazo pricing — free plan and Alfaazo Plus";
-const DESCRIPTION = `Alfaazo is free to download. The free plan covers ${APP.free.unitsText}; Alfaazo Plus (US$${APP.plus.monthlyUsd}/month, US$${APP.plus.yearlyUsd}/year or US$${APP.plus.lifetimeUsd} lifetime) unlocks all ${APP.lessons} lessons and removes ads.`;
+const DESCRIPTION = `Free to download, with 14 of ${APP.units} units free. ${APP.plus.name} (US$${APP.plus.monthlyUsd}/month, US$${APP.plus.yearlyUsd}/year or US$${APP.plus.lifetimeUsd} lifetime) unlocks all ${APP.lessons} lessons and removes ads.`;
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },

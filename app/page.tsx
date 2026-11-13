@@ -16,10 +16,10 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Alfaazo — Best App to Learn Punjabi | Free on iOS & Android",
+    absolute: "Alfaazo — Learn Punjabi App: Gurmukhi, Phrases, Native Audio",
   },
   description:
-    "The best free app to learn Punjabi. Master Gurmukhi script, everyday phrases, and real conversations with native audio. Free on iOS & Android.",
+    "Learn Punjabi with Alfaazo: the Gurmukhi script, 1,200+ words and phrases with native audio, 112 bite-sized lessons. Free to download on iOS and Android.",
   keywords: [
     "learn Punjabi",
     "best app to learn Punjabi",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     "learn Punjabi alphabet",
   ],
   openGraph: {
-    title: "Alfaazo — Best App to Learn Punjabi | Free on iOS & Android",
+    title: "Alfaazo — Learn Punjabi App: Gurmukhi, Phrases, Native Audio",
     description:
       "Master Punjabi — Gurmukhi script, everyday phrases, and real-world conversations. Bite-sized lessons crafted with cultural love. Free on iOS & Android.",
     url: "https://www.alfaazo.com",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alfaazo — Best App to Learn Punjabi",
+    title: "Alfaazo — Learn Punjabi App",
     description:
       "Master Punjabi — Gurmukhi script, everyday phrases, and real-world conversations. Free on iOS & Android.",
     creator: "@codefeb",

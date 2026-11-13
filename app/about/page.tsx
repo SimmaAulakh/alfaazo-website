@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Alfaazo — The Punjabi Learning App and the Team Behind It",
+  title: "About Alfaazo: the Punjabi App and Who Builds It",
   description:
-    "Alfaazo is a Punjabi-only learning app: 112 Gurmukhi-first lessons with native audio, built by Simranjeet Aulakh at Codefeb. Free to download on iOS and Android.",
+    "Alfaazo is a Punjabi-only learning app: 112 Gurmukhi-first lessons with native audio, built by Simranjeet Aulakh. Free to download on iOS and Android.",
   keywords: [
     "what is Alfaazo",
     "Alfaazo Punjabi app",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     "about Alfaazo",
   ],
   openGraph: {
-    title: "About Alfaazo — The Punjabi Learning App and the Team Behind It",
+    title: "About Alfaazo: the Punjabi App and Who Builds It",
     description:
       "Alfaazo is a Punjabi-only learning app: 112 Gurmukhi-first lessons with native audio, built by Simranjeet Aulakh at Codefeb.",
     url: "https://www.alfaazo.com/about",

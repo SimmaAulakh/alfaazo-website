@@ -26,11 +26,11 @@ export async function generateMetadata({
   const url = `https://www.alfaazo.com/author/${author.slug}`;
   return {
     title: `${author.name} — ${author.role}`,
-    description: author.bio,
+    description: `${author.name} (${author.role}): guides to Punjabi words, phrases, Gurmukhi and culture on the Alfaazo journal.`,
     alternates: { canonical: url },
     openGraph: {
       title: `${author.name} — Alfaazo`,
-      description: author.bio,
+      description: `${author.name} (${author.role}): guides to Punjabi words, phrases, Gurmukhi and culture on the Alfaazo journal.`,
       url,
       siteName: "Alfaazo",
       type: "profile",

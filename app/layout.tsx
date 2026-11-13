@@ -23,11 +23,11 @@ const notoNastaliq = Noto_Nastaliq_Urdu({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.alfaazo.com"),
   title: {
-    default: "Alfaazo — Learn Punjabi with Bite-Sized Lessons | Free App",
+    default: "Alfaazo — Learn Punjabi with Bite-Sized Lessons",
     template: "%s — Alfaazo",
   },
   description:
-    "Free app to learn Punjabi. Master Gurmukhi script, everyday phrases, and conversations with native audio. Bite-sized lessons. iOS & Android.",
+    "Learn Punjabi with Alfaazo: Gurmukhi script, everyday phrases and conversations with native audio in bite-sized lessons. Free to download on iOS and Android.",
   keywords: [
     "learn Punjabi",
     "best app to learn Punjabi",
@@ -128,17 +128,12 @@ const jsonLd = {
       description:
         "Learn Punjabi with bite-sized lessons crafted with cultural love.",
       publisher: { "@type": "Organization", name: "Codefeb" },
-      potentialAction: {
-        "@type": "SearchAction",
-        target: "https://www.alfaazo.com/blog?q={search_term_string}",
-        "query-input": "required name=search_term_string",
-      },
     },
     {
       "@type": "Course",
       name: "Learn Punjabi with Alfaazo",
       description:
-        "Free Punjabi language course covering Gurmukhi script, everyday phrases, and real-world conversations through bite-sized lessons.",
+        "Punjabi language course covering Gurmukhi script, everyday phrases, and real-world conversations through bite-sized lessons; the first section is free.",
       provider: { "@type": "Organization", name: "Codefeb" },
       isAccessibleForFree: true,
       inLanguage: "en",

@@ -21,7 +21,7 @@ export const revalidate = 86400;
 const URL = `${SITE_URL}/app`;
 const TITLE = "Alfaazo: Learn Punjabi — the app, its lessons and its price";
 const DESCRIPTION =
-  "What the Alfaazo app teaches, who it is for and what it costs: 112 Gurmukhi-first Punjabi lessons with native audio, free to download on iOS and Android, with an optional Plus upgrade.";
+  "What Alfaazo teaches, who it is for and what it costs: 112 Gurmukhi-first Punjabi lessons with native audio, free to download on iOS and Android.";
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
