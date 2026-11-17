@@ -225,6 +225,122 @@ export const COMPARISONS: Comparison[] = [
       { label: "Best apps to learn Punjabi in 2026", href: "/blog/best-app-to-learn-punjabi-2026" },
     ],
   },
+  {
+    slug: "alfaazo-vs-utalk",
+    name: "Alfaazo vs uTalk",
+    short: "uTalk",
+    title: "Alfaazo vs uTalk for Learning Punjabi (2026): Phrase Drills or a Course?",
+    metaTitle: "Alfaazo vs uTalk for Punjabi (2026)",
+    description:
+      "Alfaazo vs uTalk for Punjabi: uTalk drills 2,500+ phrases in both scripts; Alfaazo is a 112-lesson Gurmukhi-first course. Script, audio, price and ratings.",
+    quickAnswer:
+      "uTalk and Alfaazo do different jobs. uTalk is a phrasebook with games: 2,500+ words and phrases across 60+ topics, in Indian (Gurmukhi) or Pakistani (Shahmukhi) Punjabi, recorded by native speakers, with the script shown but not taught. Alfaazo is a sequenced course: the Gurmukhi script taught stroke by stroke, then 112 lessons of vocabulary, grammar and conversation with native audio. Pick uTalk for fast phrases before a trip or if you need Shahmukhi; pick Alfaazo to read, write and build sentences.",
+    intro:
+      "uTalk is the phrase-drilling app that covers more languages than almost anyone (150-plus), and it offers Punjabi in both of its scripts, which no other major app does. Alfaazo is a Punjabi-only course that starts with the Gurmukhi script. The overlap is vocabulary with native audio; the difference is whether you want phrases to recognise and repeat, or a course that teaches you how the language works.",
+    rows: [
+      { label: "Built for", alfaazo: ALFAAZO.builtFor, other: "Vocabulary and phrase practice through games, in 150+ languages on one template" },
+      { label: "Punjabi taught", alfaazo: ALFAAZO.punjabi, other: "Two separate courses: Punjabi (Indian), Gurmukhi script; Punjabi (Pakistani), Shahmukhi script" },
+      { label: "Teaches the Gurmukhi script", alfaazo: ALFAAZO.script, other: "No lessons on the letters; Gurmukhi text is shown alongside every phrase" },
+      { label: "Audio", alfaazo: ALFAAZO.audio, other: "Native-speaker recordings; a speaking game compares your pronunciation" },
+      { label: "Course size", alfaazo: ALFAAZO.size, other: "Over 2,500 words and phrases across 60+ topics (greetings, food, travel, emergencies…); no grammar or sentence building" },
+      { label: "Free plan", alfaazo: ALFAAZO.free, other: "A free starter-words topic" },
+      { label: "Paid plan", alfaazo: ALFAAZO.paid, other: `Subscription plans sold through utalk.com and the app stores; prices are not shown on the course page and vary by country (checked ${CHECKED})` },
+      { label: "Platforms", alfaazo: ALFAAZO.platforms, other: "iOS, Android and web" },
+      { label: "Maker and age", alfaazo: ALFAAZO.maker, other: "EuroTalk Ltd, London; uTalk app since 2016, EuroTalk since the 1990s" },
+      { label: "US App Store rating", alfaazo: "__RATING__", other: `4.4 from 1,048 ratings, all languages (${CHECKED})` },
+      { label: "Best for", alfaazo: "Learning to read, write and speak Punjabi as a course", other: "Fast phrase vocabulary before a trip; learners who need Pakistani Punjabi in Shahmukhi" },
+    ],
+    otherBetter: [
+      "Pakistani Punjabi in Shahmukhi: uTalk is the only major app besides Mango that offers it, and the only one offering both scripts.",
+      "Breadth: 2,500-plus phrases across 60-plus topics, including niche ones (emergencies, sport, business) a course never reaches.",
+      "Games that make drilling vocabulary fun, and a speaking game that scores your pronunciation.",
+      "150-plus languages on one account, and a web version.",
+    ],
+    alfaazoBetter: [
+      "It teaches the script. uTalk shows Gurmukhi but never teaches the letters, so uTalk-only learners read Roman transliteration; Alfaazo starts with stroke-by-stroke Gurmukhi.",
+      "It is a course, not a list: grammar, sentence building, tenses and conversation in a sequence, where uTalk is phrases to recognise.",
+      "Cultural content written for Punjabi (proverbs, festivals, family terms, etiquette) rather than one template across 150 languages.",
+      `A larger free plan (${APP.free.unitsText}) and a published price (US${APP.plus.yearlyUsd} a year, US${APP.plus.lifetimeUsd} lifetime).`,
+    ],
+    pickOther:
+      "You need Pakistani Punjabi, you want a few hundred phrases for a trip or a wedding in the next month, or you already use uTalk for other languages.",
+    pickAlfaazo:
+      "You want to read and write Gurmukhi, you want to understand how sentences work rather than memorise them, or you are a heritage speaker rebuilding the language properly. Many learners use uTalk as a phrase supplement to a course.",
+    faq: [
+      { q: "Is uTalk good for Punjabi?", a: "uTalk is good for phrase vocabulary: over 2,500 words and phrases in 60-plus topics, with native-speaker audio and games, in either Indian (Gurmukhi) or Pakistani (Shahmukhi) Punjabi. It does not teach the script or grammar, so it works best alongside a course." },
+      { q: "Does uTalk teach Gurmukhi?", a: "uTalk shows Gurmukhi text with every Indian Punjabi phrase but has no lessons on the letters or vowel signs. Alfaazo teaches the script stroke by stroke from the first unit." },
+      { q: "Does uTalk have Pakistani Punjabi?", a: "Yes. uTalk sells Punjabi (Indian) in Gurmukhi and Punjabi (Pakistani) in Shahmukhi as separate courses. Alfaazo teaches Indian Punjabi in Gurmukhi only." },
+      { q: "Which is cheaper, uTalk or Alfaazo?", a: `uTalk's prices are not shown on its course page and vary by plan and country. Alfaazo is free to download with ${APP.free.unitsText} free, and Alfaazo Plus is US${APP.plus.monthlyUsd} a month, US${APP.plus.yearlyUsd} a year or US${APP.plus.lifetimeUsd} for life.` },
+    ],
+    sources: [
+      { label: "uTalk: Learn Punjabi (Indian)", url: "https://utalk.com/en/store/punjabi-indian" },
+      { label: "uTalk Punjabi courses", url: "https://utalk.com/en/store/punjabi" },
+      { label: "uTalk on the App Store", url: "https://apps.apple.com/us/app/id1085013031" },
+      { label: "Alfaazo on the App Store", url: "https://apps.apple.com/us/app/id6759987308" },
+    ],
+    related: [
+      { label: "Best apps to learn Punjabi in 2026", href: "/blog/best-app-to-learn-punjabi-2026" },
+      { label: "Gurmukhi vs Shahmukhi: which script to learn", href: "/blog/gurmukhi-vs-shahmukhi" },
+    ],
+  },
+  {
+    slug: "alfaazo-vs-mango",
+    name: "Alfaazo vs Mango Languages",
+    short: "Mango Languages",
+    title: "Alfaazo vs Mango Languages for Punjabi (2026): Gurmukhi Course or Shahmukhi Conversations?",
+    metaTitle: "Alfaazo vs Mango Languages for Punjabi (2026)",
+    description:
+      "Alfaazo vs Mango Languages for Punjabi: Mango teaches Pakistani Punjabi in Shahmukhi, often free via libraries; Alfaazo teaches Indian Punjabi in Gurmukhi.",
+    quickAnswer:
+      "Mango Languages and Alfaazo teach different Punjabis. Mango's course is Pakistani Punjabi in the Shahmukhi (Perso-Arabic) script, conversation-based, and free through many public libraries; otherwise about US$13.99 a month for all 70-plus languages. Alfaazo teaches Indian Punjabi in Gurmukhi, script first, in 112 lessons with native audio, free to download with an optional Plus plan. Pick Mango if your family is from Pakistani Punjab or your library gives it free; pick Alfaazo for Indian Punjabi and Gurmukhi.",
+    intro:
+      "Mango Languages is the app you may already have for free through your library card, and it is one of only two major apps that teach Pakistani Punjabi in Shahmukhi. Alfaazo teaches Indian Punjabi in Gurmukhi. The spoken language overlaps heavily; the scripts, vocabulary flavour and audience do not, so the first question is which Punjabi you need.",
+    rows: [
+      { label: "Built for", alfaazo: ALFAAZO.builtFor, other: "Conversation-based courses in 70+ languages, sold mainly to libraries, schools and businesses" },
+      { label: "Punjabi taught", alfaazo: ALFAAZO.punjabi, other: "Punjabi (Pakistani) in Shahmukhi, the Perso-Arabic script" },
+      { label: "Teaches the Gurmukhi script", alfaazo: ALFAAZO.script, other: "No; it teaches Shahmukhi reading alongside the conversations" },
+      { label: "Audio", alfaazo: ALFAAZO.audio, other: "Native-speaker recordings with a voice-comparison tool" },
+      { label: "Course size", alfaazo: ALFAAZO.size, other: "Not published for Punjabi; Mango courses are built as units of conversation-based chapters with grammar and culture notes" },
+      { label: "Free plan", alfaazo: ALFAAZO.free, other: "The first chapter of each course free; the whole platform free with a participating public-library card" },
+      { label: "Paid plan", alfaazo: ALFAAZO.paid, other: `About US$13.99 a month, or around US$10 a month billed annually, for all 70+ languages (mangolanguages.com, ${CHECKED})` },
+      { label: "Platforms", alfaazo: ALFAAZO.platforms, other: "iOS, Android and web" },
+      { label: "Maker and age", alfaazo: ALFAAZO.maker, other: "Mango Languages, Michigan, USA; founded 2007" },
+      { label: "US App Store rating", alfaazo: "__RATING__", other: `4.8 from 44,356 ratings, all languages (${CHECKED})` },
+      { label: "Best for", alfaazo: "Indian Punjabi, reading Gurmukhi, heritage learners in the diaspora", other: "Pakistani Punjabi and Shahmukhi; anyone whose library provides it free" },
+    ],
+    otherBetter: [
+      "Pakistani Punjabi in Shahmukhi: if your family is from Lahore, Faisalabad or Rawalpindi, Mango is the right script and vocabulary, and Alfaazo is not.",
+      "Free through libraries: many public libraries in the US, Canada, the UK and Australia give full access with a library card.",
+      "Conversation-first method with cultural notes, and a far longer track record (since 2007, 44,000 iOS ratings).",
+      "One subscription for 70-plus languages, with a web version.",
+    ],
+    alfaazoBetter: [
+      "Indian Punjabi in Gurmukhi, which is what most of the diaspora in Canada, the UK, the US and Australia speaks and what the gurdwara reads.",
+      "The script taught stroke by stroke from the first unit; Mango's Punjabi cannot teach you to read a Gurmukhi sign or the Guru Granth Sahib.",
+      `A sequenced ${APP.lessons}-lesson course with a published size (${APP.vocabulary} words, ${APP.exercises} exercises) and a free plan that covers 14 units.`,
+      `A lower published price: US${APP.plus.yearlyUsd} a year or US${APP.plus.lifetimeUsd} for life, against about US$13.99 a month.`,
+    ],
+    pickOther:
+      "You want Pakistani Punjabi, you read or want to learn Shahmukhi, or your library card gives you Mango for free and you want to try before spending anything.",
+    pickAlfaazo:
+      "You want Indian Punjabi and the Gurmukhi script, you are a heritage speaker whose family reads Gurmukhi, or you want a course built only for Punjabi.",
+    faq: [
+      { q: "Does Mango Languages have Punjabi?", a: "Yes, Mango Languages teaches Punjabi (Pakistani) in the Shahmukhi script, with conversation-based lessons and native audio. It does not teach Indian Punjabi in Gurmukhi." },
+      { q: "Is Mango Languages free?", a: "Mango is free with a library card at many public libraries in the US, Canada, the UK and Australia, and the first chapter of each course is free for everyone. Otherwise it is about US$13.99 a month, or around US$10 a month billed annually, for all its languages." },
+      { q: "Mango or Alfaazo for Punjabi?", a: "Choose by script. Mango for Pakistani Punjabi in Shahmukhi (or if your library provides it free); Alfaazo for Indian Punjabi in Gurmukhi, with the script taught from the first lesson and 112 sequenced lessons." },
+      { q: "Can I use Mango to learn Gurmukhi?", a: "No. Mango's Punjabi course uses Shahmukhi. To learn Gurmukhi use Alfaazo, Ling, PunjabiCharm or Punjabi University's free online course; the options are compared in the Gurmukhi app guide." },
+    ],
+    sources: [
+      { label: "Mango Languages: Punjabi (Pakistani)", url: "https://www.mangolanguages.com/available-languages/punjabi-pakistani" },
+      { label: "Mango Languages pricing", url: "https://mangolanguages.com/pricing" },
+      { label: "Mango Languages on the App Store", url: "https://apps.apple.com/us/app/id443516516" },
+      { label: "Alfaazo on the App Store", url: "https://apps.apple.com/us/app/id6759987308" },
+    ],
+    related: [
+      { label: "Best app to learn Gurmukhi", href: "/blog/best-app-to-learn-gurmukhi" },
+      { label: "Gurmukhi vs Shahmukhi: which script to learn", href: "/blog/gurmukhi-vs-shahmukhi" },
+    ],
+  },
 ];
 
 export const COMPARE_URL = `${SITE_URL}/compare`;
